@@ -128,7 +128,8 @@
     }
     .panel[hidden] { display: none; }
     @keyframes reveal { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
-    .panel h3 { font-size: 2rem; color: var(--gold-light); margin-bottom: 4px; }
+    .panel h3 { display: flex; align-items: center; gap: 12px; font-size: 2rem; color: var(--gold-light); margin-bottom: 4px; }
+    .panel h3 .spark { width: 1.35em; height: auto; flex: none; filter: drop-shadow(0 0 8px rgba(255, 214, 120, .45)); }
     .panel .sub { color: var(--muted); margin: 0 0 20px; }
     .details { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 16px; margin: 0 0 20px; }
     .details div { border-left: 2px solid var(--gold); padding-left: 14px; }
@@ -338,7 +339,12 @@
       function buildPanel(loc) {
         var p = el('article', 'panel');
         p.id = loc.id; p.hidden = true;
-        p.appendChild(el('h3', null, loc.name));
+        var title = el('h3');
+        var spark = el('img', 'spark');
+        spark.src = 'assets/star.webp'; spark.alt = ''; spark.setAttribute('aria-hidden', 'true');
+        title.appendChild(spark);
+        title.appendChild(document.createTextNode(loc.name));
+        p.appendChild(title);
         p.appendChild(el('p', 'sub', 'Futures Carols 2026'));
 
         if (!loc.dates) {
