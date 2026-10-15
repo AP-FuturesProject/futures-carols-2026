@@ -47,8 +47,11 @@
     header { position: relative; text-align: center; padding: 48px 0 24px; }
     header > *:not(.star) { position: relative; z-index: 1; }
     .star { position: absolute; height: auto; pointer-events: none; z-index: 0; filter: drop-shadow(0 0 14px rgba(255, 214, 120, .35)); }
-    .star-a { width: clamp(64px, 13vw, 130px); top: 28px; left: clamp(-24px, -2vw, 0px); transform: rotate(-14deg); }
-    .star-b { width: clamp(90px, 20vw, 210px); top: 150px; right: clamp(-48px, -4vw, 0px); transform: rotate(18deg); }
+    /* Accent stars placed in open space further down the page (full-width layer per section, behind the content) */
+    .deco { position: absolute; top: 0; bottom: 0; left: 50%; width: 100vw; transform: translateX(-50%); pointer-events: none; z-index: 0; }
+    .star-d { width: clamp(64px, 9vw, 120px); left: 5%; top: 18%; transform: rotate(-14deg); }
+    .star-e { width: clamp(56px, 7vw, 100px); right: 3%; top: 38%; transform: rotate(16deg); }
+    #locations { position: relative; }
     .star-c { display: block; width: 44px; height: auto; margin: 0 auto 16px; filter: drop-shadow(0 0 10px rgba(255, 214, 120, .35)); }
     .logo-wrap { position: relative; width: min(560px, 90%); margin-inline: auto; line-height: 0; filter: drop-shadow(0 0 28px rgba(255, 214, 120, 0.3)); }
     .logo { width: 100%; height: auto; }
@@ -214,8 +217,8 @@
     /* Phones (priority): tighter spacing, grid picker, stacked dates, full-width actions */
     @media (max-width: 639px) {
       header { padding: 72px 0 8px; }
-      .star-a { width: 52px; top: 14px; left: 4px; }
-      .star-b { width: 64px; top: 10px; right: 4px; }
+      .star-d { display: none; }
+      .star-e { width: 40px; right: 8%; top: 22px; }
       .tagline { font-size: 1.05rem; }
       section { padding: 28px 0; }
       .section-title { margin-bottom: 18px; }
@@ -251,8 +254,6 @@
 <body>
 
   <header class="wrap">
-    <img class="star star-a" src="assets/star.webp" alt="" aria-hidden="true">
-    <img class="star star-b" src="assets/star.webp" alt="" aria-hidden="true">
     <div class="logo-wrap">
       <img class="logo" src="assets/carols-logo.webp" alt="Futures Carols" width="1540" height="969">
       <span class="sheen" aria-hidden="true"></span>
@@ -263,6 +264,7 @@
 
   <main>
     <section class="wrap" id="locations" aria-labelledby="loc-title">
+      <div class="deco" aria-hidden="true"><img class="star star-d" src="assets/star.webp" alt=""></div>
       <h2 id="loc-title" class="section-title">Find a Futures Carols Near You!</h2>
       <p class="section-note">Click a location below for more information</p>
 
@@ -272,6 +274,7 @@
     </section>
 
     <section class="wrap video-band" aria-labelledby="video-title">
+      <div class="deco" aria-hidden="true"><img class="star star-e" src="assets/star.webp" alt=""></div>
       <h2 id="video-title" class="section-title">Watch</h2>
       <div class="video">
         <!--
