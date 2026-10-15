@@ -16,6 +16,7 @@
       --bg-soft: #7a1507;
       --card: #8a1808;
       --glow: #ff7a50;
+      --bg-deep: #b02a13;
       --on-bg: #fff1d2; /* cream for text and outlines sitting directly on the bright background */
       --display: 'Libre Caslon Condensed', Georgia, serif;
       --display-tracking: -0.04em; /* -40 in design-tool tracking units */
@@ -30,9 +31,8 @@
     html, body { overflow-x: clip; }
     body {
       margin: 0;
-      background:
-        radial-gradient(ellipse at 50% -10%, var(--glow) 0%, transparent 65%) no-repeat top / 100% 900px,
-        var(--bg);
+      /* Flat #f73b1a like the A5 design, easing darker toward the bottom (design bottom edge is about #ab2812) */
+      background: linear-gradient(180deg, var(--bg) 0%, var(--bg) 40%, var(--bg-deep) 100%) no-repeat, var(--bg);
       color: var(--text);
       font-family: 'Inter', system-ui, sans-serif;
       line-height: 1.6;
