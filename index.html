@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Futures Carols 2026</title>
+  <meta name="description" content="Futures Carols 2026 — pick your location and join us for a night of Christmas carols.">
+  <link rel="icon" href="assets/carols-logo.webp">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b0f1a;
+      --bg-soft: #131a2b;
+      --card: #172036;
+      --gold: #d9b45f;
+      --gold-light: #f0d795;
+      --text: #f4efe4;
+      --muted: #a9b0c2;
+      --line: rgba(217, 180, 95, 0.28);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background:
+        radial-gradient(ellipse at 50% -10%, #1f2a48 0%, transparent 60%),
+        var(--bg);
+      color: var(--text);
+      font-family: 'Inter', system-ui, sans-serif;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    .wrap { width: min(960px, 100% - 32px); margin-inline: auto; }
+    h1, h2, h3 { font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 500; margin: 0; }
+
+    /* Hero */
+    header { text-align: center; padding: 48px 0 24px; }
+    .logo { width: min(560px, 90%); height: auto; filter: drop-shadow(0 0 30px rgba(217, 180, 95, 0.25)); }
+    .eyebrow {
+      letter-spacing: .35em; text-transform: uppercase; font-size: .8rem;
+      color: var(--gold); margin: 8px 0 0;
+    }
+    .tagline { color: var(--muted); max-width: 52ch; margin: 16px auto 0; }
+
+    section { padding: 40px 0; }
+    .section-title { font-size: clamp(1.8rem, 5vw, 2.6rem); text-align: center; color: var(--gold-light); margin-bottom: 24px; }
+
+    /* Video */
+    .video {
+      position: relative; aspect-ratio: 16 / 9; border-radius: 14px; overflow: hidden;
+      border: 1px solid var(--line); background: var(--bg-soft);
+      box-shadow: 0 20px 60px rgba(0,0,0,.45);
+    }
+    .video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+    .video-placeholder {
+      position: absolute; inset: 0; display: grid; place-content: center; gap: 8px;
+      text-align: center; color: var(--muted); padding: 16px;
+    }
+    .video-placeholder svg { width: 64px; height: 64px; margin-inline: auto; fill: none; stroke: var(--gold); stroke-width: 1.5; }
+    /* Replace the placeholder with a Vimeo iframe — see the comment in the markup. */
+
+    /* Location picker */
+    .picker { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin: 0; padding: 0; list-style: none; }
+    .picker button {
+      font: inherit; font-weight: 500; cursor: pointer;
+      padding: 14px 26px; border-radius: 999px;
+      color: var(--gold-light); background: transparent;
+      border: 1px solid var(--gold);
+      transition: background .2s, color .2s, transform .2s;
+    }
+    .picker button:hover { background: rgba(217, 180, 95, .12); transform: translateY(-1px); }
+    .picker button:focus-visible { outline: 3px solid var(--gold-light); outline-offset: 3px; }
+    .picker button[aria-expanded="true"] { background: var(--gold); color: #1a1405; }
+
+    .panels { margin-top: 28px; }
+    .panel {
+      background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+      padding: clamp(20px, 4vw, 36px);
+      animation: reveal .35s ease;
+    }
+    .panel[hidden] { display: none; }
+    @keyframes reveal { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+    .panel h3 { font-size: 2rem; color: var(--gold-light); margin-bottom: 4px; }
+    .panel .sub { color: var(--muted); margin: 0 0 20px; }
+    .details { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 16px; margin: 0 0 20px; }
+    .details div { border-left: 2px solid var(--gold); padding-left: 14px; }
+    .details dt { font-size: .75rem; letter-spacing: .15em; text-transform: uppercase; color: var(--gold); }
+    .details dd { margin: 2px 0 0; }
+    .tbc { color: var(--muted); font-style: italic; }
+    .btn {
+      display: inline-block; padding: 12px 22px; border-radius: 999px; text-decoration: none;
+      background: var(--gold); color: #1a1405; font-weight: 600;
+    }
+    .btn:hover { background: var(--gold-light); }
+    .btn:focus-visible { outline: 3px solid var(--gold-light); outline-offset: 3px; }
+
+    footer { text-align: center; color: var(--muted); font-size: .85rem; padding: 40px 0 56px; border-top: 1px solid var(--line); margin-top: 24px; }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .panel { animation: none; }
+      .picker button { transition: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="wrap">
+    <img class="logo" src="assets/carols-logo.webp" alt="Carols" width="1540" height="969">
+    <p class="eyebrow">Futures Church &middot; 2026</p>
+    <p class="tagline">Join us for a night of Christmas carols, community and celebration.</p>
+  </header>
+
+  <main>
+    <section class="wrap" aria-labelledby="video-title">
+      <h2 id="video-title" class="section-title">Watch</h2>
+      <div class="video">
+        <!--
+          VIMEO EMBED: replace the .video-placeholder div below with:
+          <iframe src="https://player.vimeo.com/video/YOUR_VIDEO_ID?dnt=1"
+                  allow="autoplay; fullscreen; picture-in-picture"
+                  allowfullscreen title="Futures Carols 2026"></iframe>
+        -->
+        <div class="video-placeholder">
+          <svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="29"/><path d="M26 20l20 12-20 12z"/></svg>
+          <strong>Video coming soon</strong>
+          <span>Vimeo embed placeholder</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="wrap" id="locations" aria-labelledby="loc-title">
+      <h2 id="loc-title" class="section-title">Pick a location:</h2>
+
+      <ul class="picker">
+        <li><button type="button" aria-expanded="false" aria-controls="paradise">Paradise</button></li>
+        <li><button type="button" aria-expanded="false" aria-controls="copper-coast">Copper Coast</button></li>
+        <li><button type="button" aria-expanded="false" aria-controls="victor-harbor">Victor Harbor</button></li>
+        <li><button type="button" aria-expanded="false" aria-controls="adelaide-city">Adelaide City</button></li>
+        <li><button type="button" aria-expanded="false" aria-controls="south">South (Old Reynella)</button></li>
+      </ul>
+
+      <!-- TODO: replace each "To be confirmed" with the real details and add the booking/RSVP link. -->
+      <div class="panels">
+        <article class="panel" id="paradise" hidden>
+          <h3>Paradise</h3>
+          <p class="sub">Futures Carols 2026 &mdash; Paradise</p>
+          <dl class="details">
+            <div><dt>Date</dt><dd class="tbc">To be confirmed</dd></div>
+            <div><dt>Time</dt><dd class="tbc">To be confirmed</dd></div>
+            <div><dt>Venue</dt><dd class="tbc">To be confirmed</dd></div>
+            <div><dt>Address</dt><dd class="tbc">To be confirmed</dd></div>
+            <div><dt>Parking &amp; access</dt><dd class="tbc">To be confirmed</dd></div>
+          </dl>
+          <a class="btn" href="#">Register / RSVP</a>
+        </article>
+
+        <article class="panel" id="copper-coast" hidden>
+          <h3>Copper Coast</h3>
+          <p class="sub">Futures Carols 2026 &mdash; Copper Coast</p>
+          <dl class="details">
+            <div><dt>Date</dt><dd class="tbc">To be confirmed</dd></div>
+            <div><dt>Time</dt><dd class="tbc">To be confirmed</dd></div>
+            <div><dt>Venue</dt><dd class="tbc">To be confirmed</dd></div>
+            <div><dt>Address</dt><dd class="tbc">To be confirmed</dd></div>
+            <div><dt>Parking &amp; access</dt><dd class="tbc">To be confirmed</dd></div>
+          </dl>
+          <a class="btn" href="#">Register / RSVP</a>
+        </article>
+
+        <article class="panel" id="victor-harbor" hidden>
+          <h3>Victor Harbor</h3>
+          <p class="sub">Futures Carols 2026 &mdash; Victor Harbor</p>
+          <dl class="details">
+            <div><dt>Date</dt><dd class="tbc">To be confirmed</dd></div>
+            <div><dt>Time</dt><dd class="tbc">To be confirmed</dd></div>
+            <div><dt>Venue</dt><dd class="tbc">To be confirmed</dd></div>
+            <div><dt>Address</dt><dd class="tbc">To be confirmed</dd></div>
+            <div><dt>Parking &amp; access</dt><dd class="tbc">To be confirmed</dd></div>
+          </dl>
+          <a class="btn" href="#">Register / RSVP</a>
+        </article>
+
+        <article class="panel" id="adelaide-city" hidden>
+          <h3>Adelaide City</h3>
+          <p class="sub">Futures Carols 2026 &mdash; Adelaide City</p>
+          <dl class="details">
+            <div><dt>Date</dt><dd class="tbc">To be confirmed</dd></div>
+            <div><dt>Time</dt><dd class="tbc">To be confirmed</dd></div>
+            <div><dt>Venue</dt><dd class="tbc">To be confirmed</dd></div>
+            <div><dt>Address</dt><dd class="tbc">To be confirmed</dd></div>
+            <div><dt>Parking &amp; access</dt><dd class="tbc">To be confirmed</dd></div>
+          </dl>
+          <a class="btn" href="#">Register / RSVP</a>
+        </article>
+
+        <article class="panel" id="south" hidden>
+          <h3>South (Old Reynella)</h3>
+          <p class="sub">Futures Carols 2026 &mdash; South (Old Reynella)</p>
+          <dl class="details">
+            <div><dt>Date</dt><dd class="tbc">To be confirmed</dd></div>
+            <div><dt>Time</dt><dd class="tbc">To be confirmed</dd></div>
+            <div><dt>Venue</dt><dd class="tbc">To be confirmed</dd></div>
+            <div><dt>Address</dt><dd class="tbc">To be confirmed</dd></div>
+            <div><dt>Parking &amp; access</dt><dd class="tbc">To be confirmed</dd></div>
+          </dl>
+          <a class="btn" href="#">Register / RSVP</a>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">&copy; 2026 Futures Church. All rights reserved.</div>
+  </footer>
+
+  <script>
+    (function () {
+      var buttons = document.querySelectorAll('.picker button');
+      var panels = document.querySelectorAll('.panel');
+
+      function show(id) {
+        panels.forEach(function (p) { p.hidden = p.id !== id; });
+        buttons.forEach(function (b) {
+          b.setAttribute('aria-expanded', String(b.getAttribute('aria-controls') === id));
+        });
+      }
+
+      buttons.forEach(function (b) {
+        b.addEventListener('click', function () {
+          var id = b.getAttribute('aria-controls');
+          var open = b.getAttribute('aria-expanded') === 'true';
+          show(open ? null : id);
+          if (!open) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          }
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
