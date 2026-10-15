@@ -469,10 +469,14 @@
       var el = document.getElementById('photo-carousel');
       if (!window.FlexCarousel || !el) return;
       var small = window.matchMedia('(max-width: 639px)').matches;
-      // Replace these placeholders with real event photos (any size; portrait around 4:5 suits the cards best).
-      var photos = [1, 2, 3, 4, 5, 6, 7, 8].map(function (n) {
-        return { src: 'assets/carousel/placeholder-' + n + '.webp', alt: 'Futures Carols photo ' + n };
-      });
+      // To change the photos: put files in assets/carousel/ and edit this list (alt text is read aloud by screen readers).
+      var photos = [
+        { src: 'assets/carousel/photo-1.webp', alt: 'Kids and a reindeer performer on stage with arms raised in front of a snowy backdrop' },
+        { src: 'assets/carousel/photo-2.webp', alt: 'A woman smiling and singing into a microphone on stage, with a guitarist behind her' },
+        { src: 'assets/carousel/photo-3.webp', alt: 'A band performing on stage under spotlights in front of a seated audience' },
+        { src: 'assets/carousel/photo-4.webp', alt: 'Two girls smiling at the camera in the audience under purple light' },
+        { src: 'assets/carousel/photo-5.webp', alt: 'Santa waving in the aisle of a packed auditorium' }
+      ];
       // Settings follow the component's 'arch' look: cards ride an arch-shaped lens and squeeze together as they slide.
       window.FlexCarousel(el, {
         items: photos,
