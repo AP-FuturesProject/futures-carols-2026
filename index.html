@@ -82,6 +82,9 @@
     }
 
     .section-note { margin: -12px 0 22px; text-align: center; font-size: .85rem; letter-spacing: .04em; color: var(--muted); }
+    /* Video section: full-bleed darker band */
+    .video-band { position: relative; isolation: isolate; margin-top: 24px; }
+    .video-band::before { content: ''; position: absolute; top: 0; bottom: 0; left: -100vw; right: -100vw; z-index: -1; background: #3a060e; box-shadow: inset 0 1px 0 rgba(217, 180, 95, .18), inset 0 -1px 0 rgba(217, 180, 95, .18); }
     /* Video */
     .video {
       position: relative; aspect-ratio: 16 / 9; border-radius: 14px; overflow: hidden;
@@ -234,7 +237,7 @@
       <div class="panels" id="panels"></div>
     </section>
 
-    <section class="wrap" aria-labelledby="video-title">
+    <section class="wrap video-band" aria-labelledby="video-title">
       <h2 id="video-title" class="section-title">Watch</h2>
       <div class="video">
         <!--
