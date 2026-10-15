@@ -9,13 +9,15 @@
   <link rel="icon" href="assets/carols-logo.webp">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Condensed:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg: #7d0f1c;
       --bg-soft: #5e0a15;
       --card: #6a0c18;
       --glow: #b8222f;
+      --display: 'Libre Caslon Condensed', Georgia, serif;
+      --display-tracking: -0.04em; /* -40 in design-tool tracking units */
       --gold: #d9b45f;
       --gold-light: #f0d795;
       --text: #f4efe4;
@@ -38,7 +40,7 @@
       padding-right: env(safe-area-inset-right, 0px);
     }
     .wrap { width: min(960px, 100% - 32px); margin-inline: auto; }
-    h1, h2, h3 { font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 500; margin: 0; }
+    h1, h2, h3 { font-family: var(--display); letter-spacing: var(--display-tracking); font-weight: 500; margin: 0; }
 
     /* Hero */
     header { position: relative; text-align: center; padding: 48px 0 24px; }
@@ -70,7 +72,7 @@
     section { padding: 40px 0; }
     .section-title {
       text-wrap: balance; line-height: 1.15;
-      font-size: clamp(1.8rem, 5vw, 2.6rem); text-align: center; color: var(--gold-light); margin-bottom: 24px;
+      font-size: clamp(2.1rem, 6.5vw, 3rem); text-align: center; color: var(--gold-light); margin-bottom: 24px;
       background: linear-gradient(100deg, var(--gold) 40%, #fff6cf 50%, var(--gold) 60%) 100% 0 / 250% 100% no-repeat;
       -webkit-background-clip: text; background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -131,7 +133,7 @@
     }
     .panel[hidden] { display: none; }
     @keyframes reveal { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
-    .panel h3 { display: flex; align-items: center; gap: 12px; font-size: 2rem; color: var(--gold-light); margin-bottom: 4px; }
+    .panel h3 { display: flex; align-items: center; gap: 12px; font-size: 2.4rem; color: var(--gold-light); margin-bottom: 4px; }
     .panel h3 .spark { width: 1.35em; height: auto; flex: none; filter: drop-shadow(0 0 8px rgba(255, 214, 120, .45)); }
     .panel .sub { color: var(--muted); margin: 0 0 20px; }
     .details { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 16px; margin: 0 0 20px; }
@@ -150,14 +152,14 @@
     /* Event details */
     .countdown { display: flex; flex-wrap: wrap; gap: 12px; margin: 0 0 24px; }
     .countdown .unit { min-width: 76px; text-align: center; padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; background: rgba(0,0,0,.18); }
-    .countdown b { display: block; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 2rem; font-weight: 600; line-height: 1.1; color: var(--gold-light); font-variant-numeric: tabular-nums; }
+    .countdown b { display: block; font-family: var(--display); letter-spacing: var(--display-tracking); font-size: 2rem; font-weight: 600; line-height: 1.1; color: var(--gold-light); font-variant-numeric: tabular-nums; }
     .countdown span { font-size: .7rem; letter-spacing: .15em; text-transform: uppercase; color: var(--muted); }
-    .countdown-note { color: var(--gold-light); font-family: 'Cormorant Garamond', Georgia, serif; font-size: 1.5rem; margin: 0 0 24px; }
-    .dates { font-family: 'Cormorant Garamond', Georgia, serif; font-size: clamp(1.6rem, 5vw, 2.2rem); color: var(--text); margin: 0 0 20px; }
+    .countdown-note { color: var(--gold-light); font-family: var(--display); letter-spacing: var(--display-tracking); font-size: 1.5rem; margin: 0 0 24px; }
+    .dates { font-family: var(--display); letter-spacing: var(--display-tracking); font-size: clamp(1.6rem, 5vw, 2.2rem); color: var(--text); margin: 0 0 20px; }
     .dates em { color: var(--gold); font-style: normal; padding: 0 .25em; }
     .schedule { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin: 0 0 24px; padding: 0; list-style: none; }
     .schedule li { border-left: 2px solid var(--gold); padding-left: 14px; }
-    .schedule .time { display: block; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 2.4rem; line-height: 1; font-weight: 600; color: var(--gold-light); }
+    .schedule .time { display: block; font-family: var(--display); letter-spacing: var(--display-tracking); font-size: 2.4rem; line-height: 1; font-weight: 600; color: var(--gold-light); }
     .schedule .what { font-size: .8rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
     .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 24px; padding: 0; list-style: none; }
     .chips li { padding: 6px 14px; border-radius: 999px; font-size: .9rem; border: 1px solid var(--line); background: rgba(0,0,0,.18); }
