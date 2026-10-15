@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Futures Carols 2026</title>
+  <meta name="theme-color" content="#7d0f1c">
   <meta name="description" content="Futures Carols 2026 — pick your location and join us for a night of Christmas carols.">
   <link rel="icon" href="assets/carols-logo.webp">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -22,17 +23,19 @@
       --line: rgba(217, 180, 95, 0.28);
     }
     * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; background: var(--bg); }
     html, body { overflow-x: clip; }
     body {
       margin: 0;
       background:
-        radial-gradient(ellipse at 50% -10%, var(--glow) 0%, transparent 65%),
+        radial-gradient(ellipse at 50% -10%, var(--glow) 0%, transparent 65%) no-repeat top / 100% 900px,
         var(--bg);
       color: var(--text);
       font-family: 'Inter', system-ui, sans-serif;
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
+      padding-left: env(safe-area-inset-left, 0px);
+      padding-right: env(safe-area-inset-right, 0px);
     }
     .wrap { width: min(960px, 100% - 32px); margin-inline: auto; }
     h1, h2, h3 { font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 500; margin: 0; }
@@ -100,7 +103,7 @@
       border: 1px solid var(--gold);
       transition: background .2s, color .2s, transform .2s;
     }
-    .picker button:hover { background: rgba(217, 180, 95, .12); transform: translateY(-1px); }
+    @media (hover: hover) { .picker button:hover { background: rgba(217, 180, 95, .12); transform: translateY(-1px); } }
     .picker button:focus-visible { outline: 3px solid var(--gold-light); outline-offset: 3px; }
     .picker button[aria-expanded="true"] { background: var(--gold); color: #1a1405; }
     /* Featured location: own row, larger, always filled gold */
@@ -110,10 +113,12 @@
       background: linear-gradient(180deg, var(--gold-light), var(--gold)); color: #1a1405;
       box-shadow: 0 0 28px rgba(255, 214, 120, .4);
     }
-    .picker li.featured button:hover { background: linear-gradient(180deg, #fff3c8, var(--gold-light)); }
+    @media (hover: hover) { .picker li.featured button:hover { background: linear-gradient(180deg, #fff3c8, var(--gold-light)); } }
     .picker li.featured button[aria-expanded="true"] { box-shadow: 0 0 0 3px var(--bg), 0 0 0 5px var(--gold-light), 0 0 28px rgba(255, 214, 120, .5); }
 
+    .picker button { touch-action: manipulation; min-height: 48px; -webkit-tap-highlight-color: transparent; }
     .panels { margin-top: 28px; }
+    .panel { scroll-margin-top: 12px; }
     .panel {
       background: var(--card); border: 1px solid var(--line); border-radius: 14px;
       padding: clamp(20px, 4vw, 36px);
@@ -132,7 +137,7 @@
       display: inline-block; padding: 12px 22px; border-radius: 999px; text-decoration: none;
       background: var(--gold); color: #1a1405; font-weight: 600;
     }
-    .btn:hover { background: var(--gold-light); }
+    @media (hover: hover) { .btn:hover { background: var(--gold-light); } }
     .btn:focus-visible { outline: 3px solid var(--gold-light); outline-offset: 3px; }
 
 
@@ -154,13 +159,38 @@
     .where strong { display: block; letter-spacing: .1em; text-transform: uppercase; font-size: .85rem; color: var(--gold); font-weight: 500; }
     .actions { display: flex; flex-wrap: wrap; gap: 12px; }
     .btn.ghost { background: transparent; color: var(--gold-light); border: 1px solid var(--gold); }
-    .btn.ghost:hover { background: rgba(217, 180, 95, .12); }
+    @media (hover: hover) { .btn.ghost:hover { background: rgba(217, 180, 95, .12); } }
 
 
     /* Glow cursor: full-viewport overlay, never intercepts the mouse */
     .glow-cursor { position: relative; width: 100%; height: 100%; overflow: hidden; }
     .glow-cursor--page { position: fixed; inset: 0; z-index: 9999; pointer-events: none; }
     .glow-cursor__canvas { position: absolute; inset: 0; display: block; width: 100%; height: 100%; pointer-events: none; user-select: none; }
+
+    /* Phones (priority): tighter spacing, grid picker, stacked dates, full-width actions */
+    @media (max-width: 639px) {
+      header { padding: 72px 0 8px; }
+      .star-a { width: 52px; top: 14px; left: 4px; }
+      .star-b { width: 64px; top: 10px; right: 4px; }
+      .tagline { font-size: 1.05rem; }
+      section { padding: 28px 0; }
+      .section-title { margin-bottom: 18px; }
+      .picker { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+      .picker li { display: flex; }
+      .picker li.featured { grid-column: 1 / -1; margin-bottom: 4px; }
+      .picker li:last-child:nth-child(even) { grid-column: 1 / -1; }
+      .picker button { width: 100%; padding: 12px 10px; line-height: 1.25; font-size: 1rem; }
+      .picker li.featured button { font-size: 1.3rem; padding: 18px 24px; }
+      .panel { padding: 20px 18px; }
+      .countdown { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+      .countdown .unit { min-width: 0; padding: 10px 4px; }
+      .dates { display: flex; flex-direction: column; gap: 2px; }
+      .dates em { display: none; }
+      .schedule { gap: 14px; }
+      .actions .btn { flex: 1 1 100%; text-align: center; padding: 14px 22px; }
+      .video { border-radius: 12px; }
+      footer { padding: 28px 0 40px; }
+    }
 
     footer { text-align: center; color: var(--muted); font-size: .85rem; padding: 40px 0 56px; border-top: 1px solid var(--line); margin-top: 24px; }
 
@@ -264,7 +294,7 @@
         var line = el('p', 'dates');
         loc.dates.forEach(function (d, i) {
           if (i) line.appendChild(el('em', null, '+'));
-          line.appendChild(document.createTextNode(fmt(d.start, { weekday: 'long', day: 'numeric', month: 'long' })));
+          line.appendChild(el('span', null, fmt(d.start, { weekday: 'long', day: 'numeric', month: 'long' })));
         });
         return line;
       }
@@ -374,7 +404,7 @@
         var id = b.getAttribute('aria-controls');
         var open = b.getAttribute('aria-expanded') === 'true';
         show(open ? null : id);
-        if (!open) document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        if (!open) document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
     })();
   </script>
