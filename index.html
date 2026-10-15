@@ -11,13 +11,14 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #0b0f1a;
-      --bg-soft: #131a2b;
-      --card: #172036;
+      --bg: #7d0f1c;
+      --bg-soft: #5e0a15;
+      --card: #6a0c18;
+      --glow: #b8222f;
       --gold: #d9b45f;
       --gold-light: #f0d795;
       --text: #f4efe4;
-      --muted: #a9b0c2;
+      --muted: #ecc9c3;
       --line: rgba(217, 180, 95, 0.28);
     }
     * { box-sizing: border-box; }
@@ -25,7 +26,7 @@
     body {
       margin: 0;
       background:
-        radial-gradient(ellipse at 50% -10%, #1f2a48 0%, transparent 60%),
+        radial-gradient(ellipse at 50% -10%, var(--glow) 0%, transparent 65%),
         var(--bg);
       color: var(--text);
       font-family: 'Inter', system-ui, sans-serif;
@@ -37,7 +38,20 @@
 
     /* Hero */
     header { text-align: center; padding: 48px 0 24px; }
-    .logo { width: min(560px, 90%); height: auto; filter: drop-shadow(0 0 30px rgba(217, 180, 95, 0.25)); }
+    .logo-wrap { position: relative; width: min(560px, 90%); margin-inline: auto; line-height: 0; filter: drop-shadow(0 0 28px rgba(255, 214, 120, 0.3)); }
+    .logo { width: 100%; height: auto; }
+    /* Gold reflection: a bright band swept across the logo, clipped to the logo's own shape */
+    .sheen {
+      position: absolute; inset: 0; pointer-events: none;
+      -webkit-mask: url(assets/carols-logo.webp) center / 100% 100% no-repeat;
+              mask: url(assets/carols-logo.webp) center / 100% 100% no-repeat;
+      background: linear-gradient(105deg, transparent 43%, rgba(255, 248, 214, .95) 50%, transparent 57%) 100% 0 / 300% 100% no-repeat;
+      animation: sheen 5s ease-in-out infinite;
+    }
+    @keyframes sheen {
+      0%   { background-position: 100% 0; }
+      55%, 100% { background-position: 0% 0; }
+    }
     .eyebrow {
       letter-spacing: .35em; text-transform: uppercase; font-size: .8rem;
       color: var(--gold); margin: 8px 0 0;
@@ -45,7 +59,17 @@
     .tagline { color: var(--muted); max-width: 52ch; margin: 16px auto 0; }
 
     section { padding: 40px 0; }
-    .section-title { font-size: clamp(1.8rem, 5vw, 2.6rem); text-align: center; color: var(--gold-light); margin-bottom: 24px; }
+    .section-title {
+      font-size: clamp(1.8rem, 5vw, 2.6rem); text-align: center; color: var(--gold-light); margin-bottom: 24px;
+      background: linear-gradient(100deg, var(--gold) 40%, #fff6cf 50%, var(--gold) 60%) 100% 0 / 250% 100% no-repeat;
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shine 6s ease-in-out infinite;
+    }
+    @keyframes shine {
+      0%   { background-position: 100% 0; }
+      50%, 100% { background-position: 0% 0; }
+    }
 
     /* Video */
     .video {
@@ -100,7 +124,8 @@
 
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
-      .panel { animation: none; }
+      .panel, .sheen, .section-title { animation: none; }
+      .sheen { display: none; }
       .picker button { transition: none; }
     }
   </style>
@@ -108,7 +133,10 @@
 <body>
 
   <header class="wrap">
-    <img class="logo" src="assets/carols-logo.webp" alt="Carols" width="1540" height="969">
+    <div class="logo-wrap">
+      <img class="logo" src="assets/carols-logo.webp" alt="Carols" width="1540" height="969">
+      <span class="sheen" aria-hidden="true"></span>
+    </div>
     <p class="eyebrow">Futures Church &middot; 2026</p>
     <p class="tagline">Join us for a night of Christmas carols, community and celebration.</p>
   </header>
