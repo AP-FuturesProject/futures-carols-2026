@@ -125,6 +125,7 @@
     .xmas-logo { width: min(100%, 520px); height: auto; filter: drop-shadow(0 0 14px rgba(255, 250, 120, .25)); }
     .xmas-when { margin: 0 auto 24px; max-width: 34ch; text-wrap: balance; font-family: var(--display); letter-spacing: var(--display-tracking); font-size: clamp(1.2rem, 3.6vw, 1.6rem); line-height: 1.25; color: var(--on-bg); }
     .xmas-when { color: #ffe7a3; }
+    .xmas-sub { margin: -14px 0 24px; font-family: 'Inter', system-ui, sans-serif; font-size: .8rem; letter-spacing: .22em; text-transform: uppercase; color: var(--on-bg); }
     .campus-info { display: flex; flex-direction: column; align-items: center; gap: 1px; line-height: 1.3; }
     .campus-info strong { font-weight: 600; margin-bottom: 3px; }
     .campus-info span { font-size: .85rem; color: var(--muted); }
@@ -347,7 +348,7 @@
 
     <section class="wrap xmas xmas-band" id="christmas" aria-label="Christmas Day services">
       <button type="button" class="xmas-toggle" id="xmas-toggle" aria-expanded="false" aria-controls="xmas-panel">
-        <span>Looking for something to do on Christmas Day?</span>
+        <span>Got plans this Christmas?</span>
         <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
       </button>
       <div class="xmas-panel" id="xmas-panel" role="region" aria-labelledby="xmas-toggle">
@@ -356,7 +357,8 @@
             <span class="xmas-join">Join us for</span>
             <img class="xmas-logo" src="assets/christmas-at-futures.webp" alt="Christmas at Futures">
           </h2>
-          <p class="xmas-when">Family services are happening all around the state, click on any below for directions</p>
+          <p class="xmas-when">You&rsquo;re Invited! There&rsquo;s a Family Service Near You!</p>
+          <p class="xmas-sub">Click below for directions</p>
           <ul class="campuses" id="campuses"></ul>
           <p class="xmas-note">Church services run at all eight campuses in South Australia.</p>
         </div>
@@ -664,7 +666,7 @@
         var name = document.createElement('strong');
         name.textContent = c.name;
         var day = document.createElement('span');
-        day.textContent = 'Friday';
+        day.textContent = 'Friday 9am';
         var date = document.createElement('span');
         date.textContent = '25 December';
         info.appendChild(name); info.appendChild(day); info.appendChild(date);
@@ -672,7 +674,7 @@
         link.className = 'campus-link';
         link.href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(c.maps || ('Futures Church ' + c.name));
         link.target = '_blank'; link.rel = 'noopener';
-        link.setAttribute('aria-label', c.name + ' campus, get directions in Google Maps');
+        link.setAttribute('aria-label', c.name + ' campus, Friday 25 December 9am family service, get directions in Google Maps');
         link.appendChild(info);
         li.appendChild(link);
         if (c.instagram) {
