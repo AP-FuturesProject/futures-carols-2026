@@ -120,6 +120,27 @@
     .btn:hover { background: var(--gold-light); }
     .btn:focus-visible { outline: 3px solid var(--gold-light); outline-offset: 3px; }
 
+
+    /* Event details */
+    .countdown { display: flex; flex-wrap: wrap; gap: 12px; margin: 0 0 24px; }
+    .countdown .unit { min-width: 76px; text-align: center; padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; background: rgba(0,0,0,.18); }
+    .countdown b { display: block; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 2rem; font-weight: 600; line-height: 1.1; color: var(--gold-light); font-variant-numeric: tabular-nums; }
+    .countdown span { font-size: .7rem; letter-spacing: .15em; text-transform: uppercase; color: var(--muted); }
+    .countdown-note { color: var(--gold-light); font-family: 'Cormorant Garamond', Georgia, serif; font-size: 1.5rem; margin: 0 0 24px; }
+    .dates { font-family: 'Cormorant Garamond', Georgia, serif; font-size: clamp(1.6rem, 5vw, 2.2rem); color: var(--text); margin: 0 0 20px; }
+    .dates em { color: var(--gold); font-style: normal; padding: 0 .25em; }
+    .schedule { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin: 0 0 24px; padding: 0; list-style: none; }
+    .schedule li { border-left: 2px solid var(--gold); padding-left: 14px; }
+    .schedule .time { display: block; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 2.4rem; line-height: 1; font-weight: 600; color: var(--gold-light); }
+    .schedule .what { font-size: .8rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 24px; padding: 0; list-style: none; }
+    .chips li { padding: 6px 14px; border-radius: 999px; font-size: .9rem; border: 1px solid var(--line); background: rgba(0,0,0,.18); }
+    .where { margin: 0 0 20px; }
+    .where strong { display: block; letter-spacing: .1em; text-transform: uppercase; font-size: .85rem; color: var(--gold); font-weight: 500; }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; }
+    .btn.ghost { background: transparent; color: var(--gold-light); border: 1px solid var(--gold); }
+    .btn.ghost:hover { background: rgba(217, 180, 95, .12); }
+
     footer { text-align: center; color: var(--muted); font-size: .85rem; padding: 40px 0 56px; border-top: 1px solid var(--line); margin-top: 24px; }
 
     @media (prefers-reduced-motion: reduce) {
@@ -162,81 +183,9 @@
     <section class="wrap" id="locations" aria-labelledby="loc-title">
       <h2 id="loc-title" class="section-title">Pick a location:</h2>
 
-      <ul class="picker">
-        <li><button type="button" aria-expanded="false" aria-controls="paradise">Paradise</button></li>
-        <li><button type="button" aria-expanded="false" aria-controls="copper-coast">Copper Coast</button></li>
-        <li><button type="button" aria-expanded="false" aria-controls="victor-harbor">Victor Harbor</button></li>
-        <li><button type="button" aria-expanded="false" aria-controls="adelaide-city">Adelaide City</button></li>
-        <li><button type="button" aria-expanded="false" aria-controls="south">South (Old Reynella)</button></li>
-      </ul>
+      <ul class="picker" id="picker"></ul>
 
-      <!-- TODO: replace each "To be confirmed" with the real details and add the booking/RSVP link. -->
-      <div class="panels">
-        <article class="panel" id="paradise" hidden>
-          <h3>Paradise</h3>
-          <p class="sub">Futures Carols 2026 &mdash; Paradise</p>
-          <dl class="details">
-            <div><dt>Date</dt><dd class="tbc">To be confirmed</dd></div>
-            <div><dt>Time</dt><dd class="tbc">To be confirmed</dd></div>
-            <div><dt>Venue</dt><dd class="tbc">To be confirmed</dd></div>
-            <div><dt>Address</dt><dd class="tbc">To be confirmed</dd></div>
-            <div><dt>Parking &amp; access</dt><dd class="tbc">To be confirmed</dd></div>
-          </dl>
-          <a class="btn" href="#">Register / RSVP</a>
-        </article>
-
-        <article class="panel" id="copper-coast" hidden>
-          <h3>Copper Coast</h3>
-          <p class="sub">Futures Carols 2026 &mdash; Copper Coast</p>
-          <dl class="details">
-            <div><dt>Date</dt><dd class="tbc">To be confirmed</dd></div>
-            <div><dt>Time</dt><dd class="tbc">To be confirmed</dd></div>
-            <div><dt>Venue</dt><dd class="tbc">To be confirmed</dd></div>
-            <div><dt>Address</dt><dd class="tbc">To be confirmed</dd></div>
-            <div><dt>Parking &amp; access</dt><dd class="tbc">To be confirmed</dd></div>
-          </dl>
-          <a class="btn" href="#">Register / RSVP</a>
-        </article>
-
-        <article class="panel" id="victor-harbor" hidden>
-          <h3>Victor Harbor</h3>
-          <p class="sub">Futures Carols 2026 &mdash; Victor Harbor</p>
-          <dl class="details">
-            <div><dt>Date</dt><dd class="tbc">To be confirmed</dd></div>
-            <div><dt>Time</dt><dd class="tbc">To be confirmed</dd></div>
-            <div><dt>Venue</dt><dd class="tbc">To be confirmed</dd></div>
-            <div><dt>Address</dt><dd class="tbc">To be confirmed</dd></div>
-            <div><dt>Parking &amp; access</dt><dd class="tbc">To be confirmed</dd></div>
-          </dl>
-          <a class="btn" href="#">Register / RSVP</a>
-        </article>
-
-        <article class="panel" id="adelaide-city" hidden>
-          <h3>Adelaide City</h3>
-          <p class="sub">Futures Carols 2026 &mdash; Adelaide City</p>
-          <dl class="details">
-            <div><dt>Date</dt><dd class="tbc">To be confirmed</dd></div>
-            <div><dt>Time</dt><dd class="tbc">To be confirmed</dd></div>
-            <div><dt>Venue</dt><dd class="tbc">To be confirmed</dd></div>
-            <div><dt>Address</dt><dd class="tbc">To be confirmed</dd></div>
-            <div><dt>Parking &amp; access</dt><dd class="tbc">To be confirmed</dd></div>
-          </dl>
-          <a class="btn" href="#">Register / RSVP</a>
-        </article>
-
-        <article class="panel" id="south" hidden>
-          <h3>South (Old Reynella)</h3>
-          <p class="sub">Futures Carols 2026 &mdash; South (Old Reynella)</p>
-          <dl class="details">
-            <div><dt>Date</dt><dd class="tbc">To be confirmed</dd></div>
-            <div><dt>Time</dt><dd class="tbc">To be confirmed</dd></div>
-            <div><dt>Venue</dt><dd class="tbc">To be confirmed</dd></div>
-            <div><dt>Address</dt><dd class="tbc">To be confirmed</dd></div>
-            <div><dt>Parking &amp; access</dt><dd class="tbc">To be confirmed</dd></div>
-          </dl>
-          <a class="btn" href="#">Register / RSVP</a>
-        </article>
-      </div>
+      <div class="panels" id="panels"></div>
     </section>
   </main>
 
@@ -246,25 +195,160 @@
 
   <script>
     (function () {
-      var buttons = document.querySelectorAll('.picker button');
-      var panels = document.querySelectorAll('.panel');
+      var TZ = 'Australia/Adelaide';
 
-      function show(id) {
-        panels.forEach(function (p) { p.hidden = p.id !== id; });
-        buttons.forEach(function (b) {
-          b.setAttribute('aria-expanded', String(b.getAttribute('aria-controls') === id));
+      // One entry per location. Fill in the rest the same way as Paradise.
+      // Times are Adelaide time; Dec is daylight saving (+10:30).
+      var LOCATIONS = [
+        {
+          id: 'paradise', name: 'Paradise',
+          dates: [
+            { start: '2026-12-12T17:30:00+10:30' },
+            { start: '2026-12-13T17:30:00+10:30' }
+          ],
+          schedule: [
+            { time: '5:30pm', what: 'Food & kids activities' },
+            { time: '7:00pm', what: 'Carols show' }
+          ],
+          highlights: ['Photos with Santa', 'Kids activities', 'Candles & glow sticks', 'Food trucks', 'Face painting', 'Fun for all ages'],
+          address: '57 Darley Road, Paradise',
+          mapsQuery: '57 Darley Road, Paradise SA',
+          website: 'https://www.futures.church'
+        },
+        { id: 'copper-coast', name: 'Copper Coast' },
+        { id: 'victor-harbor', name: 'Victor Harbor' },
+        { id: 'adelaide-city', name: 'Adelaide City' },
+        { id: 'south', name: 'South (Old Reynella)' }
+      ];
+
+      var picker = document.getElementById('picker');
+      var panelsEl = document.getElementById('panels');
+      var timer = null;
+
+      function el(tag, cls, text) {
+        var n = document.createElement(tag);
+        if (cls) n.className = cls;
+        if (text != null) n.textContent = text;
+        return n;
+      }
+      function fmt(iso, opts) {
+        return new Intl.DateTimeFormat('en-AU', Object.assign({ timeZone: TZ }, opts)).format(new Date(iso));
+      }
+      function datesLine(loc) {
+        var line = el('p', 'dates');
+        loc.dates.forEach(function (d, i) {
+          if (i) line.appendChild(el('em', null, '+'));
+          line.appendChild(document.createTextNode(fmt(d.start, { weekday: 'long', day: 'numeric', month: 'long' })));
         });
+        return line;
       }
 
-      buttons.forEach(function (b) {
-        b.addEventListener('click', function () {
-          var id = b.getAttribute('aria-controls');
-          var open = b.getAttribute('aria-expanded') === 'true';
-          show(open ? null : id);
-          if (!open) {
-            document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-          }
+      function buildCountdown(loc) {
+        var first = new Date(loc.dates[0].start).getTime();
+        // Event is over after the evening of the last date (assumed ~10pm).
+        var last = new Date(loc.dates[loc.dates.length - 1].start).getTime() + 4.5 * 3600e3;
+        var box = el('div');
+        box.dataset.countdown = '1';
+        function tick() {
+          var now = Date.now(), diff = first - now;
+          box.textContent = '';
+          if (now > last) { box.appendChild(el('p', 'countdown-note', 'Thanks for celebrating with us. See you next year!')); return; }
+          if (diff <= 0) { box.appendChild(el('p', 'countdown-note', 'It\u2019s on now. Come on down!')); return; }
+          var wrap = el('div', 'countdown');
+          wrap.setAttribute('role', 'timer');
+          var s = Math.floor(diff / 1000);
+          [['Days', Math.floor(s / 86400)], ['Hours', Math.floor(s % 86400 / 3600)], ['Mins', Math.floor(s % 3600 / 60)], ['Secs', s % 60]].forEach(function (u) {
+            var cell = el('div', 'unit');
+            cell.appendChild(el('b', null, String(u[1]).padStart(2, '0')));
+            cell.appendChild(el('span', null, u[0]));
+            wrap.appendChild(cell);
+          });
+          box.appendChild(wrap);
+        }
+        tick();
+        box.tick = tick;
+        return box;
+      }
+
+      function buildPanel(loc) {
+        var p = el('article', 'panel');
+        p.id = loc.id; p.hidden = true;
+        p.appendChild(el('h3', null, loc.name));
+        p.appendChild(el('p', 'sub', 'Futures Carols 2026'));
+
+        if (!loc.dates) {
+          var dl = el('dl', 'details');
+          ['Date', 'Time', 'Venue', 'Address'].forEach(function (k) {
+            var d = el('div');
+            d.appendChild(el('dt', null, k));
+            d.appendChild(el('dd', 'tbc', 'To be confirmed'));
+            dl.appendChild(d);
+          });
+          p.appendChild(dl);
+          return p;
+        }
+
+        p.appendChild(buildCountdown(loc));
+        p.appendChild(datesLine(loc));
+
+        var sched = el('ul', 'schedule');
+        loc.schedule.forEach(function (it) {
+          var li = el('li');
+          li.appendChild(el('span', 'time', it.time));
+          li.appendChild(el('span', 'what', it.what));
+          sched.appendChild(li);
         });
+        p.appendChild(sched);
+
+        var chips = el('ul', 'chips');
+        loc.highlights.forEach(function (h) { chips.appendChild(el('li', null, h)); });
+        p.appendChild(chips);
+
+        var where = el('p', 'where');
+        where.appendChild(el('strong', null, 'Where'));
+        where.appendChild(document.createTextNode(loc.address));
+        p.appendChild(where);
+
+        var actions = el('div', 'actions');
+        var dir = el('a', 'btn', 'Get directions');
+        dir.href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(loc.mapsQuery);
+        dir.target = '_blank'; dir.rel = 'noopener';
+        actions.appendChild(dir);
+        var web = el('a', 'btn ghost', 'futures.church');
+        web.href = loc.website; web.target = '_blank'; web.rel = 'noopener';
+        actions.appendChild(web);
+        p.appendChild(actions);
+        return p;
+      }
+
+      LOCATIONS.forEach(function (loc) {
+        var li = el('li');
+        var b = el('button', null, loc.name);
+        b.type = 'button';
+        b.setAttribute('aria-expanded', 'false');
+        b.setAttribute('aria-controls', loc.id);
+        li.appendChild(b);
+        picker.appendChild(li);
+        panelsEl.appendChild(buildPanel(loc));
+      });
+
+      function show(id) {
+        clearInterval(timer);
+        document.querySelectorAll('.panel').forEach(function (p) { p.hidden = p.id !== id; });
+        document.querySelectorAll('.picker button').forEach(function (b) {
+          b.setAttribute('aria-expanded', String(b.getAttribute('aria-controls') === id));
+        });
+        var cd = id && document.querySelector('#' + id + ' [data-countdown]');
+        if (cd) timer = setInterval(cd.tick, 1000);
+      }
+
+      picker.addEventListener('click', function (e) {
+        var b = e.target.closest('button');
+        if (!b) return;
+        var id = b.getAttribute('aria-controls');
+        var open = b.getAttribute('aria-expanded') === 'true';
+        show(open ? null : id);
+        if (!open) document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       });
     })();
   </script>
