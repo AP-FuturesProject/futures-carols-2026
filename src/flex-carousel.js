@@ -18,6 +18,8 @@ const BEND_PRESETS = {
 };
 
 const FIT_ASPECT = { portrait: 0.75, square: 1, landscape: 4 / 3 };
+const MIN_ASPECT = 0.55;
+const MAX_ASPECT = 1.9;
 const TAPS = 12;
 const PIXEL_BUDGET = 4.5e6;
 const INTRO_DURATION = { rise: 2.1, bloom: 1.6, spin: 2.2, deal: 1.5, fade: 0.35 };
@@ -483,14 +485,20 @@ function FlexCarousel(container, options) {
   const metrics = s => {
     const cardH = Math.max(24, s.cardHeight * height);
     const fixed = FIT_ASPECT[s.fit];
-    const widths = slots.map(slot => (fixed || slot.aspect) * cardH);
+    // Each card follows its photo's own shape: portrait, square or landscape.
+    // Very wide or very tall photos are limited to a sensible card shape (the image is cropped to cover it),
+    // and a card is never wider than most of the carousel, so wide photos get a shorter card instead of overflowing.
+    const maxW = width * 0.82;
+    const shapes = slots.map(slot => Math.min(MAX_ASPECT, Math.max(MIN_ASPECT, fixed || slot.aspect)));
+    const heights = shapes.map(a => Math.min(cardH, maxW / a));
+    const widths = shapes.map((a, i) => a * heights[i]);
     const centers = [];
     let cursor = 0;
     for (let i = 0; i < widths.length; i++) {
       centers.push(cursor + widths[i] / 2);
       cursor += widths[i] + s.gap;
     }
-    return { cardH, widths, centers, gap: s.gap, loop: Math.max(cursor, 1) };
+    return { cardH, heights, widths, centers, gap: s.gap, loop: Math.max(cursor, 1) };
   };
 
   const nearest = (m, at) => {
@@ -774,7 +782,8 @@ function FlexCarousel(container, options) {
     const focusAmount = clamp01(focus.t);
     const focusEase = easeInOut(focusAmount);
     const focusW = focus.index >= 0 && focus.index < n ? m.widths[focus.index] : m.cardH;
-    const focusScale = Math.max(1, Math.min(1.3, (height * 0.84) / m.cardH, (width * 0.92) / focusW));
+    const focusH = focus.index >= 0 && focus.index < n ? m.heights[focus.index] : m.cardH;
+    const focusScale = Math.max(1, Math.min(1.3, (height * 0.84) / focusH, (width * 0.92) / focusW));
     const nextLift = 1 + (focusScale - 1) * focusEase;
     if (Math.abs(nextLift - lift) > 0.0005) {
       lift = nextLift;
@@ -849,7 +858,7 @@ function FlexCarousel(container, options) {
           }
           const cw = w * scale;
           if (alpha <= 0.001 || x + cw / 2 < -40 || x - cw / 2 > width + 40) continue;
-          draws.push({ i, rel, x, y: homeY + (fx ? fx.y : 0), cw, ch: cardH * scale, alpha });
+          draws.push({ i, rel, x, y: homeY + (fx ? fx.y : 0), cw, ch: m.heights[i] * scale, alpha });
         }
       }
       draws.sort((a, b) => Math.abs(b.rel) - Math.abs(a.rel));
