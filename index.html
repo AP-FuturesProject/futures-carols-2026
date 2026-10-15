@@ -23,6 +23,7 @@
     }
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
+    html, body { overflow-x: clip; }
     body {
       margin: 0;
       background:
@@ -37,7 +38,12 @@
     h1, h2, h3 { font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 500; margin: 0; }
 
     /* Hero */
-    header { text-align: center; padding: 48px 0 24px; }
+    header { position: relative; text-align: center; padding: 48px 0 24px; }
+    header > *:not(.star) { position: relative; z-index: 1; }
+    .star { position: absolute; height: auto; pointer-events: none; z-index: 0; filter: drop-shadow(0 0 14px rgba(255, 214, 120, .35)); }
+    .star-a { width: clamp(64px, 13vw, 130px); top: 28px; left: clamp(-24px, -2vw, 0px); transform: rotate(-14deg); }
+    .star-b { width: clamp(90px, 20vw, 210px); top: 150px; right: clamp(-48px, -4vw, 0px); transform: rotate(18deg); }
+    .star-c { display: block; width: 44px; height: auto; margin: 0 auto 16px; filter: drop-shadow(0 0 10px rgba(255, 214, 120, .35)); }
     .logo-wrap { position: relative; width: min(560px, 90%); margin-inline: auto; line-height: 0; filter: drop-shadow(0 0 28px rgba(255, 214, 120, 0.3)); }
     .logo { width: 100%; height: auto; }
     /* Gold reflection: a bright band swept across the logo, clipped to the logo's own shape */
@@ -154,6 +160,8 @@
 <body>
 
   <header class="wrap">
+    <img class="star star-a" src="assets/star.webp" alt="" aria-hidden="true">
+    <img class="star star-b" src="assets/star.webp" alt="" aria-hidden="true">
     <div class="logo-wrap">
       <img class="logo" src="assets/carols-logo.webp" alt="Carols" width="1540" height="969">
       <span class="sheen" aria-hidden="true"></span>
@@ -190,7 +198,9 @@
   </main>
 
   <footer>
-    <div class="wrap">&copy; 2026 Futures Church. All rights reserved.</div>
+    <div class="wrap">
+      <img class="star-c" src="assets/star.webp" alt="" aria-hidden="true">
+      &copy; 2026 Futures Church. All rights reserved.</div>
   </footer>
 
   <script>
