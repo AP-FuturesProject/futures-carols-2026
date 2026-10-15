@@ -146,13 +146,15 @@
     .panel {
       background: var(--card); border: 1px solid var(--line); border-radius: 14px;
       padding: clamp(20px, 4vw, 36px);
+      position: relative;
       animation: reveal .35s ease;
     }
     .panel[hidden] { display: none; }
     @keyframes reveal { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
     .panel h3 { display: flex; align-items: center; gap: 12px; font-size: 2.4rem; color: var(--gold-light); margin-bottom: 4px; }
     .panel h3 .spark { width: 1.35em; height: auto; flex: none; filter: drop-shadow(0 0 8px rgba(255, 214, 120, .45)); }
-    .panel .sub { color: var(--muted); margin: 0 0 20px; }
+    .panel .sub { color: var(--on-bg); margin: 0 0 4px; font-size: .75rem; letter-spacing: .3em; text-transform: uppercase; }
+    .panel h3 { margin-bottom: 20px; }
     .details { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 16px; margin: 0 0 20px; }
     .details div { border-left: 2px solid var(--gold); padding-left: 14px; }
     .details dt { font-size: .75rem; letter-spacing: .15em; text-transform: uppercase; color: var(--gold); }
@@ -167,11 +169,13 @@
 
 
     /* Event details */
-    .countdown { display: flex; flex-wrap: wrap; gap: 12px; margin: 0 0 24px; }
-    .countdown .unit { min-width: 76px; text-align: center; padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; background: rgba(0,0,0,.18); }
-    .countdown b { display: block; font-family: var(--display); letter-spacing: var(--display-tracking); font-size: 2rem; font-weight: 600; line-height: 1.1; color: var(--gold-light); font-variant-numeric: tabular-nums; }
-    .countdown span { font-size: .7rem; letter-spacing: .15em; text-transform: uppercase; color: var(--muted); }
-    .countdown-note { color: var(--gold-light); font-family: var(--display); letter-spacing: var(--display-tracking); font-size: 1.5rem; margin: 0 0 24px; }
+    /* Countdown: half-size, pinned to the top-right corner of the panel */
+    .countdown-box { position: absolute; top: clamp(14px, 3vw, 24px); right: clamp(14px, 3vw, 24px); z-index: 1; }
+    .countdown { display: flex; gap: 6px; margin: 0; }
+    .countdown .unit { min-width: 40px; text-align: center; padding: 4px 5px; border: 1px solid var(--line); border-radius: 7px; background: rgba(0,0,0,.18); }
+    .countdown b { display: block; font-family: var(--display); letter-spacing: var(--display-tracking); font-size: 1.1rem; font-weight: 600; line-height: 1.1; color: var(--gold-light); font-variant-numeric: tabular-nums; }
+    .countdown span { font-size: .5rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+    .countdown-note { color: var(--gold-light); font-family: var(--display); letter-spacing: var(--display-tracking); font-size: .85rem; margin: 0; text-align: right; max-width: 150px; line-height: 1.2; }
     .dates { font-family: var(--display); letter-spacing: var(--display-tracking); font-size: clamp(1.6rem, 5vw, 2.2rem); color: var(--text); margin: 0 0 20px; }
     .dates em { color: var(--gold); font-style: normal; padding: 0 .25em; }
     .schedule { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin: 0 0 24px; padding: 0; list-style: none; }
@@ -179,7 +183,8 @@
     .schedule .time { display: block; font-family: var(--display); letter-spacing: var(--display-tracking); font-size: 2.4rem; line-height: 1; font-weight: 600; color: var(--gold-light); }
     .schedule .what { font-size: .8rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
     .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 24px; padding: 0; list-style: none; }
-    .chips li { padding: 6px 14px; border-radius: 999px; font-size: .9rem; border: 1px solid var(--line); background: rgba(0,0,0,.18); }
+    .chips li { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px 6px 10px; border-radius: 999px; font-size: .9rem; border: 1px solid var(--line); background: rgba(0,0,0,.18); }
+    .chip-icon { display: inline-flex; color: var(--gold-light); flex: none; }
     .where { margin: 0 0 20px; }
     .where strong { display: block; letter-spacing: .1em; text-transform: uppercase; font-size: .85rem; color: var(--gold); font-weight: 500; }
     .actions { display: flex; flex-wrap: wrap; gap: 12px; }
@@ -236,8 +241,10 @@
       .picker button { width: 100%; padding: 12px 10px; line-height: 1.25; font-size: 1rem; }
       .picker li.featured button { font-size: 1.3rem; padding: 18px 24px; }
       .panel { padding: 20px 18px; }
-      .countdown { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
-      .countdown .unit { min-width: 0; padding: 10px 4px; }
+      .countdown { gap: 4px; }
+      .countdown .unit { min-width: 33px; padding: 4px 3px; }
+      .panel .sub { letter-spacing: .18em; font-size: .68rem; }
+      .panel h3 { margin-top: 30px; }
       .dates { display: flex; flex-direction: column; gap: 2px; }
       .dates em { display: none; }
       .schedule { gap: 14px; }
@@ -322,7 +329,14 @@
             { time: '5:30pm', what: 'Food & kids activities' },
             { time: '7:00pm', what: 'Carols show' }
           ],
-          highlights: ['Photos with Santa', 'Kids activities', 'Candles & glow sticks', 'Food trucks', 'Face painting', 'Fun for all ages'],
+          highlights: [
+            { label: 'Photos with Santa', icon: 'santa' },
+            { label: 'Kids activities', icon: 'balloon' },
+            { label: 'Candles & glow sticks', icon: 'glow' },
+            { label: 'Food trucks', icon: 'truck' },
+            { label: 'Face painting', icon: 'brush' },
+            { label: 'Fun for all ages', icon: 'people' }
+          ],
           address: '57 Darley Road, Paradise',
           mapsQuery: '57 Darley Road, Paradise SA',
           website: 'https://www.futures.church'
@@ -337,6 +351,24 @@
       var picker = document.getElementById('picker');
       var panelsEl = document.getElementById('panels');
       var timer = null;
+
+      // Small line icons (24x24, drawn in the chip's text colour). Add a new key here to use it on any location.
+      var ICONS = {
+        santa: '<path d="M5 17c0-7 3-12 8-12 2 0 3.5 1 4.5 2.5"/><path d="M17.5 7.5 20 12"/><circle cx="20.5" cy="13.5" r="1.6"/><rect x="3.5" y="17" width="17" height="3.5" rx="1.75"/>',
+        balloon: '<path d="M12 3c3.5 0 5.5 2.7 5.5 6 0 3.6-3 6.5-5.5 7-2.5-.5-5.5-3.4-5.5-7 0-3.3 2-6 5.5-6z"/><path d="M12 16l-1 2h2l-1-2z"/><path d="M12 18c0 1.5 1.5 1.5 1.5 3S12 22.5 12 22.5"/>',
+        glow: '<path d="M14.5 3.5 20.5 9.5 10 20 4 14z"/><path d="m8.5 9 6.5 6.5"/><path d="M4.5 20.5l2-2"/><path d="M3 11l1.5.5M11 3l.5 1.5"/>',
+        truck: '<path d="M2.5 16V7.5h11V16"/><path d="M13.5 10H18l3 3v3h-7.5"/><circle cx="7" cy="17" r="1.8"/><circle cx="17" cy="17" r="1.8"/><path d="M5 11h5"/>',
+        brush: '<path d="M19.5 3.5c-3 1-8 5.5-9.5 9l2.5 2.5c3.5-1.5 8-6.5 9-9.5z" transform="translate(-1 0)"/><path d="M9.8 13.2c-2.2.2-3.3 1.5-3.3 3.3 0 1.3-.8 2.6-2 3.5 3.6.6 7-.8 7.6-4.3"/>',
+        people: '<circle cx="8" cy="8" r="2.6"/><circle cx="16.5" cy="9.2" r="2.1"/><path d="M3 19c0-3.2 2.2-5.3 5-5.3s5 2.1 5 5.3"/><path d="M14.5 14.2c.6-.2 1.3-.3 2-.3 2.6 0 4.5 1.9 4.5 4.6"/>',
+        star: '<path d="m12 3 2.2 6.3 6.3.2-5 3.9 1.8 6.3L12 16.1 6.7 19.7l1.8-6.3-5-3.9 6.3-.2z"/>'
+      };
+      function icon(name) {
+        var wrap = document.createElement('span');
+        wrap.className = 'chip-icon';
+        wrap.setAttribute('aria-hidden', 'true');
+        wrap.innerHTML = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">' + (ICONS[name] || ICONS.star) + '</svg>';
+        return wrap;
+      }
 
       function el(tag, cls, text) {
         var n = document.createElement(tag);
@@ -360,7 +392,7 @@
         var first = new Date(loc.dates[0].start).getTime();
         // Event is over after the evening of the last date (assumed ~10pm).
         var last = new Date(loc.dates[loc.dates.length - 1].start).getTime() + 4.5 * 3600e3;
-        var box = el('div');
+        var box = el('div', 'countdown-box');
         box.dataset.countdown = '1';
         function tick() {
           var now = Date.now(), diff = first - now;
@@ -386,13 +418,13 @@
       function buildPanel(loc) {
         var p = el('article', 'panel');
         p.id = loc.id; p.hidden = true;
+        p.appendChild(el('p', 'sub', 'Futures Carols 2026'));
         var title = el('h3');
         var spark = el('img', 'spark');
         spark.src = 'assets/star.webp'; spark.alt = ''; spark.setAttribute('aria-hidden', 'true');
         title.appendChild(spark);
         title.appendChild(document.createTextNode(loc.name));
         p.appendChild(title);
-        p.appendChild(el('p', 'sub', 'Futures Carols 2026'));
 
         if (!loc.dates) {
           var dl = el('dl', 'details');
@@ -419,7 +451,13 @@
         p.appendChild(sched);
 
         var chips = el('ul', 'chips');
-        loc.highlights.forEach(function (h) { chips.appendChild(el('li', null, h)); });
+        loc.highlights.forEach(function (h) {
+          var item = typeof h === 'string' ? { label: h } : h;
+          var li = el('li');
+          li.appendChild(icon(item.icon));
+          li.appendChild(document.createTextNode(item.label));
+          chips.appendChild(li);
+        });
         p.appendChild(chips);
 
         var where = el('p', 'where');
