@@ -338,8 +338,7 @@
             { label: 'Fun for all ages', icon: 'people' }
           ],
           address: '57 Darley Road, Paradise',
-          mapsQuery: '57 Darley Road, Paradise SA',
-          website: 'https://www.futures.church'
+          mapsQuery: '57 Darley Road, Paradise SA'
         },
         { id: 'copper-coast', name: 'Copper Coast' },
         { id: 'victor-harbor', name: 'Victor Harbor' },
@@ -470,9 +469,11 @@
         dir.href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(loc.mapsQuery);
         dir.target = '_blank'; dir.rel = 'noopener';
         actions.appendChild(dir);
-        var web = el('a', 'btn ghost', 'futures.church');
-        web.href = loc.website; web.target = '_blank'; web.rel = 'noopener';
-        actions.appendChild(web);
+        if (loc.website) {
+          var web = el('a', 'btn ghost', 'futures.church');
+          web.href = loc.website; web.target = '_blank'; web.rel = 'noopener';
+          actions.appendChild(web);
+        }
         p.appendChild(actions);
         return p;
       }
