@@ -100,6 +100,17 @@
     .church-link { color: inherit; text-decoration: underline; text-decoration-color: rgba(255, 255, 255, .45); text-underline-offset: .25em; }
     @media (hover: hover) { .church-link:hover { text-decoration-color: currentColor; } }
     .church-link:focus-visible { outline: 2px solid #fff; outline-offset: 3px; border-radius: 2px; }
+    /* Christmas Day church section */
+    .xmas { text-align: center; padding-bottom: 56px; }
+    .xmas .section-title { margin-bottom: 8px; }
+    .xmas-when { margin: 0 0 24px; font-family: var(--display); letter-spacing: var(--display-tracking); font-size: clamp(1.3rem, 4vw, 1.7rem); color: var(--on-bg); }
+    .xmas-when span { color: #ffe7a3; }
+    .campuses { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin: 0; padding: 0; list-style: none; }
+    .campuses li { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 12px 14px; border: 1px solid rgba(255, 241, 210, .55); border-radius: 12px; background: rgba(0, 0, 0, .14); text-align: left; font-weight: 500; }
+    .campuses .ig { display: inline-flex; flex: none; width: 34px; height: 34px; align-items: center; justify-content: center; border-radius: 50%; color: var(--on-bg); border: 1px solid rgba(255, 241, 210, .55); }
+    @media (hover: hover) { .campuses .ig:hover { background: rgba(255, 241, 210, .2); } }
+    .campuses .ig:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+    .xmas-note { margin: 14px 0 0; font-size: .8rem; color: var(--muted); }
     /* Video */
     .video {
       position: relative; aspect-ratio: 16 / 9; border-radius: 14px; overflow: hidden;
@@ -306,6 +317,13 @@
           <span>Vimeo embed placeholder</span>
         </div>
       </div>
+    </section>
+
+    <section class="wrap xmas" id="christmas" aria-labelledby="xmas-title">
+      <h2 id="xmas-title" class="section-title">Join us on this Christmas in church!</h2>
+      <p class="xmas-when">Christmas Day, Friday 25 December &middot; <span>9am Family Service</span></p>
+      <ul class="campuses" id="campuses"></ul>
+      <p class="xmas-note">Services run at all eight Futures Church campuses in South Australia.</p>
     </section>
   </main>
 
@@ -576,6 +594,38 @@
         saturation: 1,
         noiseAmount: 0,
         distortion: 0.04
+      });
+    })();
+  </script>
+  <script>
+    (function () {
+      // Add each campus's Instagram link as instagram: 'https://www.instagram.com/handle/'. A campus with no link shows no icon.
+      var CAMPUSES = [
+        { name: 'Paradise' },
+        { name: 'Adelaide City' },
+        { name: 'Salisbury' },
+        { name: 'Mount Barker' },
+        { name: 'Clare Valley' },
+        { name: 'Victor Harbor' },
+        { name: 'Copper Coast' },
+        { name: 'South (Old Reynella)' }
+      ];
+      var IG = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17" cy="7" r=".8" fill="currentColor"/></svg>';
+      var ul = document.getElementById('campuses');
+      CAMPUSES.forEach(function (c) {
+        var li = document.createElement('li');
+        var name = document.createElement('span');
+        name.textContent = c.name;
+        li.appendChild(name);
+        if (c.instagram) {
+          var a = document.createElement('a');
+          a.className = 'ig';
+          a.href = c.instagram; a.target = '_blank'; a.rel = 'noopener';
+          a.setAttribute('aria-label', c.name + ' on Instagram');
+          a.innerHTML = IG;
+          li.appendChild(a);
+        }
+        ul.appendChild(li);
       });
     })();
   </script>
