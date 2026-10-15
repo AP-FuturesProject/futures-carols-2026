@@ -162,6 +162,13 @@
     @media (hover: hover) { .btn.ghost:hover { background: rgba(217, 180, 95, .12); } }
 
 
+    /* Light rays: decorative glow from the top of the page, behind the header content */
+    .light-rays { position: absolute; top: 0; left: 0; width: 100%; height: min(78vh, 640px); z-index: 0; pointer-events: none; overflow: hidden; opacity: 1; mix-blend-mode: screen;
+      -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent 100%); mask-image: linear-gradient(to bottom, #000 55%, transparent 100%); }
+    .light-rays canvas { pointer-events: none; }
+    /* Particles: decorative overlay above the page, never receives input */
+    .particles-layer { position: fixed; inset: 0; z-index: 900; pointer-events: none; overflow: hidden; }
+    .particles-canvas { position: absolute; inset: 0; display: block; width: 100%; height: 100%; pointer-events: none; }
     /* Glow cursor: full-viewport overlay, never intercepts the mouse */
     .glow-cursor { position: relative; width: 100%; height: 100%; overflow: hidden; }
     .glow-cursor--page { position: fixed; inset: 0; z-index: 9999; pointer-events: none; }
@@ -405,6 +412,55 @@
         var open = b.getAttribute('aria-expanded') === 'true';
         show(open ? null : id);
         if (!open) document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    })();
+  </script>
+  <script src="assets/light-rays.js"></script>
+  <script>
+    (function () {
+      if (!window.LightRays) return;
+      var box = document.createElement('div');
+      box.className = 'light-rays';
+      box.setAttribute('aria-hidden', 'true');
+      document.body.insertBefore(box, document.body.firstChild);
+      window.LightRays(box, {
+        raysOrigin: 'top-center',
+        raysColor: '#ffe08a',
+        raysSpeed: 0.8,
+        lightSpread: 0.7,
+        rayLength: 2.2,
+        pulsating: false,
+        fadeDistance: 1,
+        saturation: 1,
+        noiseAmount: 0,
+        distortion: 0.04
+      });
+    })();
+  </script>
+  <script src="assets/particles.js"></script>
+  <script>
+    (function () {
+      if (!window.Particles) return;
+      var layer = document.createElement('div');
+      layer.className = 'particles-layer';
+      layer.setAttribute('aria-hidden', 'true');
+      document.body.appendChild(layer);
+      var small = window.matchMedia('(max-width: 639px)').matches;
+      window.Particles(layer, {
+        particleCount: small ? 90 : 170,
+        particleSpread: 10,
+        speed: 0.08,
+        particleColors: ['#ffdb6b', '#f0d795', '#fff6cf'],
+        particleBaseSize: small ? 70 : 90,
+        sizeRandomness: 1,
+        cameraDistance: 20,
+        shape: 'circle',
+        glow: 0.7,
+        twinkle: 0.5,
+        depthOfField: 0.3,
+        drift: 'down',
+        driftSpeed: 0.5,
+        opacity: 0.85
       });
     })();
   </script>
