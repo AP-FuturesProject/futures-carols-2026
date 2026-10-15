@@ -182,7 +182,7 @@
 
     /* Photo carousel (WebGL, from the FlexCarousel component): full-bleed row under the title */
     .carousel-wrap { width: 100vw; margin: 20px calc(50% - 50vw) 0; }
-    .carousel { width: 100%; height: 360px; }
+    .carousel { width: 100%; height: 420px; }
     .flex-carousel { position: relative; overflow: hidden; cursor: grab; touch-action: pan-y; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; overscroll-behavior: contain; outline: none; }
     .flex-carousel[data-hover='open'] { cursor: zoom-in; }
     .flex-carousel[data-hover='close'] { cursor: zoom-out; }
@@ -199,7 +199,7 @@
     .flex-carousel__slash { opacity: .6; }
     .flex-carousel__live { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
     @keyframes flex-carousel-reveal { from { opacity: 0; } to { opacity: 1; } }
-    @media (min-width: 640px) { .carousel { height: 560px; } }
+    @media (min-width: 640px) { .carousel { height: 600px; } }
     @media (prefers-reduced-motion: reduce) { .flex-carousel__caption { animation: none; } .flex-carousel__reel { transition: none; } }
 
     /* Light rays: decorative glow from the top of the page, behind the header content */
@@ -482,12 +482,16 @@
         { src: 'assets/carousel/photo-9.webp', alt: 'A singer in a gold dress and dancers in green polka-dot dresses on stage' }
       ];
       // Settings follow the component's 'arch' look: cards ride an arch-shaped lens and squeeze together as they slide.
+      var cardH = small ? 0.44 : 0.46;
+      var room = (el.clientHeight * (1 - cardH)) / 2; // vertical headroom above and below the middle card
+      var bend = Math.min(0.2, (1.5 * room) / Math.max(el.clientWidth, 1));
       window.FlexCarousel(el, {
         items: photos,
         label: 'Futures Carols photos',
         preset: 'arch',
         intro: 'rise',
-        cardHeight: small ? 0.55 : 0.5,
+        cardHeight: cardH,
+        bend: bend, // scaled to the available headroom so the lifted outer cards never reach the edge of the box
         gap: 12,
         squeeze: 0.2,
         focusOnClick: true,
