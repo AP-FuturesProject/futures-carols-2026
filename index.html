@@ -156,6 +156,12 @@
     .btn.ghost { background: transparent; color: var(--gold-light); border: 1px solid var(--gold); }
     .btn.ghost:hover { background: rgba(217, 180, 95, .12); }
 
+
+    /* Glow cursor (enabled by script on fine pointers only) */
+    .glow-cursor-canvas { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; }
+    html.glow-cursor, html.glow-cursor body { cursor: none; }
+    html.glow-cursor a, html.glow-cursor button { cursor: pointer; }
+
     footer { text-align: center; color: var(--muted); font-size: .85rem; padding: 40px 0 56px; border-top: 1px solid var(--line); margin-top: 24px; }
 
     @media (prefers-reduced-motion: reduce) {
@@ -370,6 +376,73 @@
         show(open ? null : id);
         if (!open) document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       });
+    })();
+  </script>
+  <script>
+    // Glowing cursor trail. Settings mirror the GlowCursor component options.
+    (function () {
+      var CFG = { color: [255, 219, 107], intensity: 1.3, trailWidth: 7.5, linger: 0.7, glow: 1.45, clickBurst: false };
+      var fine = window.matchMedia('(pointer: fine)').matches;
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!fine || reduce) return;
+
+      var canvas = document.createElement('canvas');
+      canvas.className = 'glow-cursor-canvas';
+      canvas.setAttribute('aria-hidden', 'true');
+      document.body.appendChild(canvas);
+      document.documentElement.classList.add('glow-cursor');
+      var ctx = canvas.getContext('2d');
+      var dpr = 1, w = 0, h = 0;
+      function resize() {
+        dpr = window.devicePixelRatio || 1;
+        w = window.innerWidth; h = window.innerHeight;
+        canvas.width = w * dpr; canvas.height = h * dpr;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      var pts = [], head = null, running = false, rgb = CFG.color.join(',');
+      function rgba(a) { return 'rgba(' + rgb + ',' + a + ')'; }
+
+      document.addEventListener('mousemove', function (e) {
+        head = { x: e.clientX, y: e.clientY };
+        pts.push({ x: e.clientX, y: e.clientY, t: performance.now() });
+        if (!running) { running = true; requestAnimationFrame(frame); }
+      });
+      document.addEventListener('mouseleave', function () { head = null; });
+
+      function frame(now) {
+        var life = CFG.linger * 1000;
+        while (pts.length && now - pts[0].t > life) pts.shift();
+        ctx.clearRect(0, 0, w, h);
+        ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+        for (var i = 1; i < pts.length; i++) {
+          var a = pts[i - 1], b = pts[i];
+          var f = Math.max(0, 1 - (now - b.t) / life);
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y);
+          ctx.lineWidth = Math.max(0.5, CFG.trailWidth * f);
+          ctx.strokeStyle = rgba(Math.min(1, CFG.intensity * f * 0.85));
+          ctx.shadowColor = rgba(Math.min(1, f * CFG.intensity));
+          ctx.shadowBlur = 14 * CFG.glow * f;
+          ctx.stroke();
+        }
+        ctx.shadowBlur = 0;
+        if (head) {
+          var r = CFG.trailWidth * 2.4 * CFG.glow;
+          var g = ctx.createRadialGradient(head.x, head.y, 0, head.x, head.y, r);
+          g.addColorStop(0, rgba(Math.min(1, 0.9 * CFG.intensity)));
+          g.addColorStop(0.35, rgba(0.35 * CFG.intensity));
+          g.addColorStop(1, rgba(0));
+          ctx.fillStyle = g;
+          ctx.beginPath(); ctx.arc(head.x, head.y, r, 0, Math.PI * 2); ctx.fill();
+          ctx.fillStyle = 'rgba(255, 250, 225, .95)';
+          ctx.beginPath(); ctx.arc(head.x, head.y, CFG.trailWidth * 0.4, 0, Math.PI * 2); ctx.fill();
+        }
+        ctx.globalCompositeOperation = 'source-over';
+        if (pts.length || head) requestAnimationFrame(frame); else running = false;
+      }
     })();
   </script>
 </body>
