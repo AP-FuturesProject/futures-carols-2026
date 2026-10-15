@@ -103,6 +103,15 @@
     .picker button:hover { background: rgba(217, 180, 95, .12); transform: translateY(-1px); }
     .picker button:focus-visible { outline: 3px solid var(--gold-light); outline-offset: 3px; }
     .picker button[aria-expanded="true"] { background: var(--gold); color: #1a1405; }
+    /* Featured location: own row, larger, always filled gold */
+    .picker li.featured { flex: 0 0 100%; display: flex; justify-content: center; margin-bottom: 4px; }
+    .picker li.featured button {
+      font-size: 1.25rem; font-weight: 600; padding: 18px 48px;
+      background: linear-gradient(180deg, var(--gold-light), var(--gold)); color: #1a1405;
+      box-shadow: 0 0 28px rgba(255, 214, 120, .4);
+    }
+    .picker li.featured button:hover { background: linear-gradient(180deg, #fff3c8, var(--gold-light)); }
+    .picker li.featured button[aria-expanded="true"] { box-shadow: 0 0 0 3px var(--bg), 0 0 0 5px var(--gold-light), 0 0 28px rgba(255, 214, 120, .5); }
 
     .panels { margin-top: 28px; }
     .panel {
@@ -211,7 +220,7 @@
       // Times are Adelaide time; Dec is daylight saving (+10:30).
       var LOCATIONS = [
         {
-          id: 'paradise', name: 'Paradise',
+          id: 'paradise', name: 'Paradise', featured: true,
           dates: [
             { start: '2026-12-12T17:30:00+10:30' },
             { start: '2026-12-13T17:30:00+10:30' }
@@ -333,7 +342,7 @@
       }
 
       LOCATIONS.forEach(function (loc) {
-        var li = el('li');
+        var li = el('li', loc.featured ? 'featured' : null);
         var b = el('button', null, loc.name);
         b.type = 'button';
         b.setAttribute('aria-expanded', 'false');
