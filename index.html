@@ -118,7 +118,10 @@
     .xmas-panel.open .xmas-inner { visibility: visible; transition-delay: 0s; padding-top: 28px; }
     @media (prefers-reduced-motion: reduce) { .xmas-panel, .xmas-toggle svg { transition: none; } .xmas-toggle, .xmas-toggle svg { animation: none !important; } }
     .xmas-when { margin: 0 0 24px; font-family: var(--display); letter-spacing: var(--display-tracking); font-size: clamp(1.3rem, 4vw, 1.7rem); color: var(--on-bg); }
-    .xmas-when span { color: #ffe7a3; }
+    .xmas-when { color: #ffe7a3; }
+    .campus-info { display: flex; flex-direction: column; gap: 1px; line-height: 1.3; }
+    .campus-info strong { font-weight: 600; margin-bottom: 3px; }
+    .campus-info span { font-size: .85rem; color: var(--muted); }
     .campuses { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin: 0; padding: 0; list-style: none; }
     .campuses li { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 12px 14px; border: 1px solid rgba(255, 241, 210, .55); border-radius: 12px; background: rgba(0, 0, 0, .14); text-align: left; font-weight: 500; }
     .campuses .ig { display: inline-flex; flex: none; width: 34px; height: 34px; align-items: center; justify-content: center; border-radius: 50%; color: var(--on-bg); border: 1px solid rgba(255, 241, 210, .55); }
@@ -340,8 +343,8 @@
       </button>
       <div class="xmas-panel" id="xmas-panel" role="region" aria-labelledby="xmas-toggle">
         <div class="xmas-inner">
-          <h2 id="xmas-title" class="section-title">Join us on this Christmas in church!</h2>
-          <p class="xmas-when">Christmas Day, Friday 25 December &middot; <span>9am Family Service</span></p>
+          <h2 id="xmas-title" class="section-title">Join us this Christmas at Futures!</h2>
+          <p class="xmas-when">9am family service</p>
           <ul class="campuses" id="campuses"></ul>
           <p class="xmas-note">Services run at all eight Futures Church campuses in South Australia.</p>
         </div>
@@ -643,9 +646,16 @@
       var ul = document.getElementById('campuses');
       CAMPUSES.forEach(function (c) {
         var li = document.createElement('li');
-        var name = document.createElement('span');
+        var info = document.createElement('span');
+        info.className = 'campus-info';
+        var name = document.createElement('strong');
         name.textContent = c.name;
-        li.appendChild(name);
+        var day = document.createElement('span');
+        day.textContent = 'Friday';
+        var date = document.createElement('span');
+        date.textContent = '25 December';
+        info.appendChild(name); info.appendChild(day); info.appendChild(date);
+        li.appendChild(info);
         if (c.instagram) {
           var a = document.createElement('a');
           a.className = 'ig';
