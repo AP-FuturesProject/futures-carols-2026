@@ -179,8 +179,8 @@
 
     /* Photo carousel (WebGL, from the FlexCarousel component): full-bleed row under the title */
     .carousel-wrap { width: 100vw; margin: 20px calc(50% - 50vw) 0; }
-    .carousel { width: 100%; height: 340px; }
-    .flex-carousel { position: relative; width: 100%; height: 100%; overflow: hidden; cursor: grab; touch-action: pan-y; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; overscroll-behavior: contain; outline: none; }
+    .carousel { width: 100%; height: 360px; }
+    .flex-carousel { position: relative; overflow: hidden; cursor: grab; touch-action: pan-y; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; overscroll-behavior: contain; outline: none; }
     .flex-carousel[data-hover='open'] { cursor: zoom-in; }
     .flex-carousel[data-hover='close'] { cursor: zoom-out; }
     .flex-carousel[data-dragging] { cursor: grabbing; }
@@ -196,7 +196,7 @@
     .flex-carousel__slash { opacity: .6; }
     .flex-carousel__live { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
     @keyframes flex-carousel-reveal { from { opacity: 0; } to { opacity: 1; } }
-    @media (min-width: 640px) { .carousel { height: 440px; } }
+    @media (min-width: 640px) { .carousel { height: 560px; } }
     @media (prefers-reduced-motion: reduce) { .flex-carousel__caption { animation: none; } .flex-carousel__reel { transition: none; } }
 
     /* Light rays: decorative glow from the top of the page, behind the header content */
@@ -470,15 +470,16 @@
       var photos = [1, 2, 3, 4, 5, 6, 7, 8].map(function (n) {
         return { src: 'assets/carousel/placeholder-' + n + '.webp', alt: 'Futures Carols photo ' + n };
       });
+      // Settings follow the component's 'arch' look: cards ride an arch-shaped lens and squeeze together as they slide.
       window.FlexCarousel(el, {
         items: photos,
         label: 'Futures Carols photos',
-        preset: 'liquid',
+        preset: 'arch',
         intro: 'rise',
-        cardHeight: small ? 0.66 : 0.62,
+        cardHeight: small ? 0.55 : 0.5,
         gap: 12,
-        radius: 6,
-        bend: 0.14, // gentle wave; larger values lift cards past the edges of the carousel box and get clipped
+        squeeze: 0.2,
+        focusOnClick: true,
         captions: false,
         autoplay: true,
         interval: 4,
