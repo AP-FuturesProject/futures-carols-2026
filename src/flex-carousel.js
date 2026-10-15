@@ -1056,8 +1056,9 @@ function FlexCarousel(container, options) {
   };
 
   const onWheel = e => {
+    // The page must always scroll when the pointer is over the carousel, so the wheel is never captured.
+    if (!settings.captureWheel || e.ctrlKey) return;
     const s = settings;
-    if (e.ctrlKey) return;
     let dx = e.deltaX;
     let dy = e.deltaY;
     if (e.shiftKey && Math.abs(dx) < Math.abs(dy)) {
@@ -1066,7 +1067,6 @@ function FlexCarousel(container, options) {
     }
     const unit = e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? height : 1;
     const horizontal = Math.abs(dx) > Math.abs(dy);
-    if (!horizontal && !s.captureWheel) return;
     e.preventDefault();
     skipIntro();
     interactedAt = performance.now();
