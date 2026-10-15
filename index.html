@@ -85,9 +85,30 @@
     }
 
     .section-note { margin: -12px 0 22px; text-align: center; font-size: .85rem; letter-spacing: .04em; color: var(--muted); }
-    /* Video section: full-bleed darker band */
-    .video-band { position: relative; isolation: isolate; margin-top: 24px; }
-    .video-band::before { content: ''; position: absolute; top: 0; bottom: 0; left: -100vw; right: -100vw; z-index: -1; background: #4a0f06; box-shadow: inset 0 1px 0 rgba(217, 180, 95, .18), inset 0 -1px 0 rgba(217, 180, 95, .18); }
+    /* Video section: full-bleed darker band whose top edge is a jagged spark burst */
+    .video-band { --spike: 170px; position: relative; isolation: isolate; margin-top: var(--spike); }
+    .video-band::before {
+      content: ''; position: absolute; left: 50%; width: 100vw; transform: translateX(-50%); bottom: 0; top: calc(var(--spike) * -1); z-index: -1; background: #4a0f06;
+      /* Spark-style needle points of uneven height, tallest in the centre, with deep notches between them. */
+      clip-path: polygon(
+        0% calc(var(--spike) * 0.85),
+        7% calc(var(--spike) * 0.30),
+        14% calc(var(--spike) * 0.90),
+        21% calc(var(--spike) * 0.55),
+        28% calc(var(--spike) * 0.85),
+        38% calc(var(--spike) * 0.20),
+        45% calc(var(--spike) * 0.88),
+        52% calc(var(--spike) * 0.00),
+        58% calc(var(--spike) * 0.90),
+        66% calc(var(--spike) * 0.45),
+        72% calc(var(--spike) * 0.88),
+        80% calc(var(--spike) * 0.10),
+        87% calc(var(--spike) * 0.85),
+        93% calc(var(--spike) * 0.50),
+        100% calc(var(--spike) * 0.85),
+        100% 100%,
+        0 100%);
+    }
     /* Video */
     .video {
       position: relative; aspect-ratio: 16 / 9; border-radius: 14px; overflow: hidden;
@@ -205,6 +226,7 @@
       .schedule { gap: 14px; }
       .actions .btn { flex: 1 1 100%; text-align: center; padding: 14px 22px; }
       .video { border-radius: 12px; }
+      .video-band { --spike: 96px; }
       footer { padding: 28px 0 40px; }
     }
 
