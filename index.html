@@ -97,6 +97,9 @@
       background: var(--band);
       -webkit-mask: url(assets/star.webp) center / contain no-repeat; mask: url(assets/star.webp) center / contain no-repeat;
     }
+    .church-link { color: inherit; text-decoration: underline; text-decoration-color: rgba(255, 255, 255, .45); text-underline-offset: .25em; }
+    @media (hover: hover) { .church-link:hover { text-decoration-color: currentColor; } }
+    .church-link:focus-visible { outline: 2px solid #fff; outline-offset: 3px; border-radius: 2px; }
     /* Video */
     .video {
       position: relative; aspect-ratio: 16 / 9; border-radius: 14px; overflow: hidden;
@@ -272,7 +275,7 @@
       <img class="logo" src="assets/carols-logo.webp" alt="Futures Carols" width="1540" height="969">
       <span class="sheen" aria-hidden="true"></span>
     </div>
-    <p class="eyebrow">Presented by Futures Church</p>
+    <p class="eyebrow">Presented by <a class="church-link" href="https://www.futures.church" target="_blank" rel="noopener">Futures Church</a></p>
     <div class="carousel-wrap"><div id="photo-carousel" class="carousel"></div></div>
   </header>
 
@@ -309,7 +312,7 @@
   <footer>
     <div class="wrap">
       <img class="star-c" src="assets/star.webp" alt="" aria-hidden="true">
-      &copy; 2026 Futures Church. All rights reserved.</div>
+      &copy; 2026 <a class="church-link" href="https://www.futures.church" target="_blank" rel="noopener">Futures Church</a>. All rights reserved.</div>
   </footer>
 
   <script>
