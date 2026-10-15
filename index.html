@@ -126,10 +126,17 @@
     /* Featured location: own row, larger, always filled gold */
     .picker li.featured { flex: 0 0 100%; display: flex; justify-content: center; margin-bottom: 4px; }
     .picker li.featured button {
-      font-size: 1.25rem; font-weight: 600; padding: 18px 48px;
+      font-size: 1.4rem; font-weight: 600; padding: 20px 52px;
       background: linear-gradient(180deg, var(--gold-light), var(--gold)); color: #1a1405;
       box-shadow: 0 0 28px rgba(255, 214, 120, .4);
     }
+    /* Paradise extras: star in the label, a light sweep across the button, and a slow glowing halo */
+    .picker li.featured button { position: relative; overflow: hidden; display: inline-flex; align-items: center; justify-content: center; gap: 12px; animation: halo 3.2s ease-in-out infinite; }
+    .picker li.featured button .btn-star { width: 1.5em; height: auto; flex: none; filter: drop-shadow(0 0 4px rgba(120, 60, 0, .35)); }
+    .picker li.featured button::after { content: ''; position: absolute; inset: 0; background: linear-gradient(105deg, transparent 38%, rgba(255, 255, 255, .4) 50%, transparent 62%) 140% 0 / 250% 100% no-repeat; animation: btnsweep 4.5s ease-in-out infinite; pointer-events: none; }
+    @keyframes btnsweep { 0%, 35% { background-position: 140% 0; } 75%, 100% { background-position: -40% 0; } }
+    @keyframes halo { 0%, 100% { box-shadow: 0 0 22px rgba(255, 214, 120, .35); } 50% { box-shadow: 0 0 46px 6px rgba(255, 214, 120, .65); } }
+    @media (prefers-reduced-motion: reduce) { .picker li.featured button, .picker li.featured button::after { animation: none; } }
     @media (hover: hover) { .picker li.featured button:hover { background: linear-gradient(180deg, #fff3c8, var(--gold-light)); } }
     .picker li.featured button[aria-expanded="true"] { box-shadow: 0 0 0 3px var(--bg), 0 0 0 5px #fff, 0 0 28px rgba(255, 214, 120, .5); }
 
@@ -434,7 +441,13 @@
 
       LOCATIONS.forEach(function (loc) {
         var li = el('li', loc.featured ? 'featured' : null);
-        var b = el('button', null, loc.name);
+        var b = el('button', null);
+        if (loc.featured) {
+          var st = el('img', 'btn-star');
+          st.src = 'assets/star.webp'; st.alt = ''; st.setAttribute('aria-hidden', 'true');
+          b.appendChild(st);
+        }
+        b.appendChild(document.createTextNode(loc.name));
         b.type = 'button';
         b.setAttribute('aria-expanded', 'false');
         b.setAttribute('aria-controls', loc.id);
