@@ -69,6 +69,7 @@
 
     section { padding: 40px 0; }
     .section-title {
+      text-wrap: balance; line-height: 1.15;
       font-size: clamp(1.8rem, 5vw, 2.6rem); text-align: center; color: var(--gold-light); margin-bottom: 24px;
       background: linear-gradient(100deg, var(--gold) 40%, #fff6cf 50%, var(--gold) 60%) 100% 0 / 250% 100% no-repeat;
       -webkit-background-clip: text; background-clip: text;
@@ -80,6 +81,7 @@
       50%, 100% { background-position: 0% 0; }
     }
 
+    .section-note { margin: -12px 0 22px; text-align: center; font-size: .85rem; letter-spacing: .04em; color: var(--muted); }
     /* Video */
     .video {
       position: relative; aspect-ratio: 16 / 9; border-radius: 14px; overflow: hidden;
@@ -224,7 +226,8 @@
 
   <main>
     <section class="wrap" id="locations" aria-labelledby="loc-title">
-      <h2 id="loc-title" class="section-title">Pick a location:</h2>
+      <h2 id="loc-title" class="section-title">Find a Futures Carols Near You!</h2>
+      <p class="section-note">Click a location below for more information</p>
 
       <ul class="picker" id="picker"></ul>
 
