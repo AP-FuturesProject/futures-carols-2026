@@ -103,7 +103,11 @@
     /* Christmas Day church section */
     .xmas { text-align: center; padding-top: 12px; padding-bottom: 56px; }
     .xmas .section-title { margin-bottom: 8px; }
-    .xmas-toggle { display: flex; align-items: center; justify-content: space-between; gap: 16px; width: 100%; min-height: 56px; padding: 14px 20px; font: inherit; font-family: var(--display); letter-spacing: var(--display-tracking); font-size: clamp(1.2rem, 4vw, 1.6rem); text-align: left; color: var(--on-bg); background: rgba(0, 0, 0, .14); border: 1px solid rgba(255, 241, 210, .55); border-radius: 14px; cursor: pointer; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+    .xmas-toggle { display: flex; align-items: center; justify-content: center; gap: 14px; width: 100%; min-height: 56px; padding: 14px 20px; font: inherit; font-family: var(--display); letter-spacing: var(--display-tracking); font-size: clamp(1.2rem, 4vw, 1.6rem); text-align: center; color: var(--on-bg); background: rgba(0, 0, 0, .14); border: 1px solid rgba(255, 241, 210, .55); border-radius: 14px; cursor: pointer; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+    .xmas-toggle[aria-expanded="false"] { animation: xmaspulse 2.6s ease-in-out infinite; }
+    @keyframes xmaspulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(255, 241, 210, .0); transform: scale(1); } 50% { box-shadow: 0 0 22px 2px rgba(255, 241, 210, .4); transform: scale(1.015); } }
+    .xmas-toggle[aria-expanded="false"] svg { animation: xmasbob 2.6s ease-in-out infinite; }
+    @keyframes xmasbob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(3px); } }
     .xmas-toggle svg { flex: none; transition: transform .3s ease; }
     .xmas-toggle[aria-expanded="true"] svg { transform: rotate(180deg); }
     .xmas-toggle:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
@@ -112,7 +116,7 @@
     .xmas-panel.open { grid-template-rows: 1fr; }
     .xmas-inner { overflow: hidden; min-height: 0; visibility: hidden; transition: visibility 0s .4s; padding-top: 0; }
     .xmas-panel.open .xmas-inner { visibility: visible; transition-delay: 0s; padding-top: 28px; }
-    @media (prefers-reduced-motion: reduce) { .xmas-panel, .xmas-toggle svg { transition: none; } }
+    @media (prefers-reduced-motion: reduce) { .xmas-panel, .xmas-toggle svg { transition: none; } .xmas-toggle, .xmas-toggle svg { animation: none !important; } }
     .xmas-when { margin: 0 0 24px; font-family: var(--display); letter-spacing: var(--display-tracking); font-size: clamp(1.3rem, 4vw, 1.7rem); color: var(--on-bg); }
     .xmas-when span { color: #ffe7a3; }
     .campuses { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin: 0; padding: 0; list-style: none; }
