@@ -85,29 +85,14 @@
     }
 
     .section-note { margin: -12px 0 22px; text-align: center; font-size: .85rem; letter-spacing: .04em; color: var(--muted); }
-    /* Video section: full-bleed darker band whose top edge is a jagged spark burst */
-    .video-band { --spike: 170px; position: relative; isolation: isolate; margin-top: var(--spike); }
-    .video-band::before {
-      content: ''; position: absolute; left: 50%; width: 100vw; transform: translateX(-50%); bottom: 0; top: calc(var(--spike) * -1); z-index: -1; background: #4a0f06;
-      /* Spark-style needle points of uneven height, tallest in the centre, with deep notches between them. */
-      clip-path: polygon(
-        0% calc(var(--spike) * 0.85),
-        7% calc(var(--spike) * 0.30),
-        14% calc(var(--spike) * 0.90),
-        21% calc(var(--spike) * 0.55),
-        28% calc(var(--spike) * 0.85),
-        38% calc(var(--spike) * 0.20),
-        45% calc(var(--spike) * 0.88),
-        52% calc(var(--spike) * 0.00),
-        58% calc(var(--spike) * 0.90),
-        66% calc(var(--spike) * 0.45),
-        72% calc(var(--spike) * 0.88),
-        80% calc(var(--spike) * 0.10),
-        87% calc(var(--spike) * 0.85),
-        93% calc(var(--spike) * 0.50),
-        100% calc(var(--spike) * 0.85),
-        100% 100%,
-        0 100%);
+    /* Video section: full-bleed darker band with a straight top edge; the spark rises out of the middle of it.
+       The star is the brand artwork used as a mask, so its outline is exact. Its lower half sits inside the band. */
+    .video-band { --star: 380px; --band: #4a0f06; position: relative; isolation: isolate; margin-top: calc(var(--star) * .44); }
+    .video-band::before { content: ''; position: absolute; left: 50%; width: 100vw; transform: translateX(-50%); top: 0; bottom: 0; z-index: -1; background: var(--band); }
+    .video-band::after {
+      content: ''; position: absolute; left: 50%; top: 0; z-index: -1; width: var(--star); height: calc(var(--star) * .885); transform: translate(-50%, -50%);
+      background: var(--band);
+      -webkit-mask: url(assets/star.webp) center / contain no-repeat; mask: url(assets/star.webp) center / contain no-repeat;
     }
     /* Video */
     .video {
@@ -226,7 +211,7 @@
       .schedule { gap: 14px; }
       .actions .btn { flex: 1 1 100%; text-align: center; padding: 14px 22px; }
       .video { border-radius: 12px; }
-      .video-band { --spike: 96px; }
+      .video-band { --star: 220px; }
       footer { padding: 28px 0 40px; }
     }
 
