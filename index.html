@@ -229,6 +229,8 @@
     .chip-icon { display: inline-flex; color: var(--gold-light); flex: none; }
     .where { margin: 0 0 20px; }
     .where strong { display: block; letter-spacing: .1em; text-transform: uppercase; font-size: .85rem; color: var(--gold); font-weight: 500; }
+    /* Extra line under the address: tickets, entry cost, parking — set per location with `note:` in LOCATIONS. */
+    .note { margin: -12px 0 20px; max-width: 58ch; font-size: .88rem; color: var(--muted); }
     .actions { display: flex; flex-wrap: wrap; gap: 12px; }
     .btn.ghost { background: transparent; color: var(--gold-light); border: 1px solid var(--gold); }
     @media (hover: hover) { .btn.ghost:hover { background: rgba(217, 180, 95, .12); } }
@@ -386,8 +388,9 @@
             { start: '2026-12-13T17:30:00+10:30' }
           ],
           schedule: [
-            { time: '5:30pm', what: 'Food & kids activities' },
-            { time: '7:00pm', what: 'Carols show' }
+            { time: '5:30pm', what: 'Food trucks, Santa photos & family activities' },
+            { time: '6:30pm', what: 'Auditorium doors open' },
+            { time: '7:00pm', what: 'Carols main show' }
           ],
           highlights: [
             { label: 'Photos with Santa', icon: 'santa' },
@@ -395,15 +398,70 @@
             { label: 'Candles & glow sticks', icon: 'glow' },
             { label: 'Food trucks', icon: 'truck' },
             { label: 'Face painting', icon: 'brush' },
+            { label: 'Singers, dancers & a kids act', icon: 'people' }
+          ],
+          address: '57 Darley Road, Paradise SA 5075',
+          mapsQuery: '57 Darley Road, Paradise SA',
+          note: '$2 tickets available online from Monday 2 November. Candles and glow sticks on sale in the foyer.'
+        },
+        {
+          id: 'victor-harbor', name: 'Victor Harbor',
+          dates: [
+            { start: '2026-12-20T16:00:00+10:30' }
+          ],
+          schedule: [
+            { time: '4:00pm', what: 'Christmas carnival' },
+            { time: '5:00pm', what: 'Carols show' }
+          ],
+          highlights: [
+            { label: 'Jumping castle', icon: 'castle' },
+            { label: 'Sumo suits', icon: 'sumo' },
+            { label: 'Lawn games', icon: 'games' },
+            { label: 'Petting zoo', icon: 'paw' },
+            { label: 'Coffee', icon: 'coffee' },
+            { label: 'Burgers', icon: 'burger' },
+            { label: 'Kids activities', icon: 'balloon' }
+          ],
+          address: '7 Walker Street, Hayborough',
+          mapsQuery: '7 Walker Street, Hayborough SA'
+        },
+        {
+          id: 'adelaide-city', name: 'Adelaide City',
+          dates: [
+            { start: '2026-12-20T16:00:00+10:30' }
+          ],
+          schedule: [
+            { time: '4:00pm', what: 'Carols show — first session' },
+            { time: '6:00pm', what: 'Carols show — second session' }
+          ],
+          highlights: [
+            { label: 'Candles & glow sticks', icon: 'glow' },
             { label: 'Fun for all ages', icon: 'people' }
           ],
-          address: '57 Darley Road, Paradise',
-          mapsQuery: '57 Darley Road, Paradise SA'
+          address: '113 Currie Street, Adelaide',
+          mapsQuery: 'Futures Church, 113 Currie Street, Adelaide SA',
+          note: 'More details to come.'
         },
-        { id: 'copper-coast', name: 'Copper Coast' },
-        { id: 'victor-harbor', name: 'Victor Harbor' },
-        { id: 'adelaide-city', name: 'Adelaide City' },
-        { id: 'south', name: 'South (Old Reynella)' },
+        {
+          id: 'south', name: 'South (Old Reynella)',
+          dates: [
+            { start: '2026-12-13T17:00:00+10:30' }
+          ],
+          schedule: [
+            { time: '5:00pm', what: 'Christmas carnival' },
+            { time: '6:30pm', what: 'Carols service' }
+          ],
+          highlights: [
+            { label: 'Inflatables', icon: 'castle' },
+            { label: 'Photos with Santa', icon: 'santa' },
+            { label: 'Food & drink', icon: 'truck' },
+            { label: 'Candles & glow sticks', icon: 'glow' },
+            { label: 'Family fun', icon: 'people' }
+          ],
+          address: '165 Old South Road, Old Reynella SA 5161',
+          mapsQuery: '165 Old South Road, Old Reynella SA',
+          note: 'Gold coin donation per person on entry. Plenty of free parking.'
+        },
         { id: 'clare-valley', name: 'Clare Valley' }
       ];
 
@@ -419,6 +477,12 @@
         truck: '<path d="M2.5 16V7.5h11V16"/><path d="M13.5 10H18l3 3v3h-7.5"/><circle cx="7" cy="17" r="1.8"/><circle cx="17" cy="17" r="1.8"/><path d="M5 11h5"/>',
         brush: '<path d="M19.5 3.5c-3 1-8 5.5-9.5 9l2.5 2.5c3.5-1.5 8-6.5 9-9.5z" transform="translate(-1 0)"/><path d="M9.8 13.2c-2.2.2-3.3 1.5-3.3 3.3 0 1.3-.8 2.6-2 3.5 3.6.6 7-.8 7.6-4.3"/>',
         people: '<circle cx="8" cy="8" r="2.6"/><circle cx="16.5" cy="9.2" r="2.1"/><path d="M3 19c0-3.2 2.2-5.3 5-5.3s5 2.1 5 5.3"/><path d="M14.5 14.2c.6-.2 1.3-.3 2-.3 2.6 0 4.5 1.9 4.5 4.6"/>',
+        castle: '<path d="M2.5 20.5h19"/><path d="M3.5 20.5V11c0-1 .8-1.8 1.8-1.8S7 10 7 11v9.5"/><path d="M17 20.5V11c0-1 .8-1.8 1.8-1.8s1.7.8 1.7 1.8v9.5"/><path d="M7 20.5V13a5 5 0 0 1 10 0v7.5"/><path d="M9.8 20.5v-3.2a2.2 2.2 0 0 1 4.4 0v3.2"/>',
+        sumo: '<circle cx="12" cy="5.2" r="2.4"/><path d="M12 8.8c-3.9 0-6.6 2.7-6.6 6.1 0 3.1 2.9 5.4 6.6 5.4s6.6-2.3 6.6-5.4c0-3.4-2.7-6.1-6.6-6.1z"/><path d="M5.8 13.2 2.6 16M18.2 13.2 21.4 16"/>',
+        games: '<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.6"/><circle cx="12" cy="12" r="1"/>',
+        paw: '<ellipse cx="12" cy="15.6" rx="4" ry="3.4"/><circle cx="6.4" cy="11" r="1.9"/><circle cx="9.9" cy="7.4" r="1.9"/><circle cx="14.1" cy="7.4" r="1.9"/><circle cx="17.6" cy="11" r="1.9"/>',
+        coffee: '<path d="M4 8.5h12V15a4.5 4.5 0 0 1-4.5 4.5h-3A4.5 4.5 0 0 1 4 15z"/><path d="M16 10h1.8a2.6 2.6 0 0 1 0 5.2H16"/><path d="M7 5.5V4M10.5 5.5V4M14 5.5V4"/>',
+        burger: '<path d="M3.5 10c0-3 3.8-5.2 8.5-5.2S20.5 7 20.5 10z"/><path d="M4 13.5h16"/><path d="M4 16.5h16c0 2.2-1.3 3.6-3.5 3.6h-9c-2.2 0-3.5-1.4-3.5-3.6z"/>',
         star: '<path d="m12 3 2.2 6.3 6.3.2-5 3.9 1.8 6.3L12 16.1 6.7 19.7l1.8-6.3-5-3.9 6.3-.2z"/>'
       };
       function icon(name) {
@@ -523,6 +587,8 @@
         where.appendChild(el('strong', null, 'Where'));
         where.appendChild(document.createTextNode(loc.address));
         p.appendChild(where);
+
+        if (loc.note) p.appendChild(el('p', 'note', loc.note));
 
         var actions = el('div', 'actions');
         var dir = el('a', 'btn', 'Get directions');
