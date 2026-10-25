@@ -462,7 +462,19 @@
           mapsQuery: '165 Old South Road, Old Reynella SA',
           note: 'Gold coin donation per person on entry. Plenty of free parking.'
         },
-        { id: 'clare-valley', name: 'Clare Valley' }
+        {
+          id: 'clare-valley', name: 'Clare Valley',
+          dates: [
+            { start: '2026-12-13T17:00:00+10:30' }
+          ],
+          schedule: [
+            { time: '5:00pm', what: 'Christmas carnival' },
+            { time: '6:30pm', what: 'Carols service' }
+          ],
+          address: 'Stradbroke Road, Stanley Flat SA 5453',
+          mapsQuery: 'Futures Church, Stradbroke Road, Stanley Flat SA 5453',
+          note: 'More details to come.'
+        }
       ];
 
       var picker = document.getElementById('picker');
@@ -573,15 +585,18 @@
         });
         p.appendChild(sched);
 
-        var chips = el('ul', 'chips');
-        loc.highlights.forEach(function (h) {
-          var item = typeof h === 'string' ? { label: h } : h;
-          var li = el('li');
-          li.appendChild(icon(item.icon));
-          li.appendChild(document.createTextNode(item.label));
-          chips.appendChild(li);
-        });
-        p.appendChild(chips);
+        // `highlights:` is optional — a location with nothing listed yet simply shows no chips.
+        if (loc.highlights && loc.highlights.length) {
+          var chips = el('ul', 'chips');
+          loc.highlights.forEach(function (h) {
+            var item = typeof h === 'string' ? { label: h } : h;
+            var li = el('li');
+            li.appendChild(icon(item.icon));
+            li.appendChild(document.createTextNode(item.label));
+            chips.appendChild(li);
+          });
+          p.appendChild(chips);
+        }
 
         var where = el('p', 'where');
         where.appendChild(el('strong', null, 'Where'));
