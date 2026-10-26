@@ -135,8 +135,6 @@
     .svc-eve { color: #ff9d8c; }
     /* Not yet reported, and we do not know which of the two days it will be — so no date and no day colour. */
     .svc-tba { color: var(--muted); font-style: italic; background: none; border: 1px dashed rgba(255, 241, 210, .45); padding: 1px 9px; }
-    .legend { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin: 18px 0 0; padding: 0; list-style: none; }
-    .legend li { display: flex; }
     .campuses { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 0; padding: 0; list-style: none; }
     .campuses li { position: relative; display: flex; border: 1px solid rgba(255, 241, 210, .55); border-radius: 12px; background: rgba(0, 0, 0, .14); text-align: center; font-weight: 500; }
     .campuses .campus-link { flex: 1; display: flex; align-items: center; justify-content: center; padding: 14px 12px; border-radius: 12px; color: inherit; text-decoration: none; min-height: 84px; -webkit-tap-highlight-color: transparent; }
@@ -146,7 +144,6 @@
     .campuses .ig { position: absolute; top: 6px; right: 6px; display: inline-flex; flex: none; width: 28px; height: 28px; align-items: center; justify-content: center; border-radius: 50%; color: var(--on-bg); border: 1px solid rgba(255, 241, 210, .55); }
     @media (hover: hover) { .campuses .ig:hover { background: rgba(255, 241, 210, .2); } }
     .campuses .ig:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
-    .xmas-note { margin: 14px 0 0; font-size: .8rem; color: var(--muted); }
     /* Video */
     .video {
       position: relative; aspect-ratio: 16 / 9; border-radius: 14px; overflow: hidden;
@@ -245,6 +242,12 @@
     .cal-btn .chip-icon svg { width: 16px; height: 16px; }
     @media (hover: hover) { .cal-btn:hover { background: rgba(217, 180, 95, .16); border-color: var(--gold); } }
     .cal-btn:focus-visible { outline: 2px solid var(--gold-light); outline-offset: 2px; }
+    .cal { position: relative; }
+    .cal-menu { position: absolute; top: calc(100% + 6px); right: 0; z-index: 5; display: flex; flex-direction: column; min-width: 190px; padding: 6px; border-radius: 12px; background: #2a0a04; border: 1px solid var(--line); box-shadow: 0 14px 34px rgba(0, 0, 0, .5); }
+    .cal-menu[hidden] { display: none; }
+    .cal-item { display: block; width: 100%; font: inherit; font-size: .82rem; text-align: left; white-space: nowrap; padding: 9px 11px; border: 0; border-radius: 8px; background: none; color: var(--text); text-decoration: none; cursor: pointer; }
+    @media (hover: hover) { .cal-item:hover { background: rgba(217, 180, 95, .18); color: var(--gold-light); } }
+    .cal-item:focus-visible { outline: 2px solid var(--gold-light); outline-offset: -2px; }
     .countdown { display: flex; gap: 6px; margin: 0; }
     .countdown .unit { min-width: 40px; text-align: center; padding: 4px 5px; border: 1px solid var(--line); border-radius: 7px; background: rgba(0,0,0,.18); }
     .countdown b { display: block; font-family: var(--display); letter-spacing: var(--display-tracking); font-size: 1.1rem; font-weight: 600; line-height: 1.1; color: var(--gold-light); font-variant-numeric: tabular-nums; }
@@ -407,11 +410,6 @@
           <p class="xmas-when">You&rsquo;re Invited! There&rsquo;s a Family Service Near You!</p>
           <p class="xmas-sub">Click below for directions</p>
           <ul class="campuses" id="campuses"></ul>
-          <ul class="legend">
-            <li><span class="svc svc-eve">Christmas Eve &mdash; Thu 24 Dec</span></li>
-            <li><span class="svc svc-day">Christmas Day &mdash; Fri 25 Dec</span></li>
-          </ul>
-          <p class="xmas-note">Each campus runs one service &mdash; either Christmas Eve or Christmas Day. Anything marked TBA will be confirmed closer to Christmas.</p>
         </div>
       </div>
     </section>
@@ -649,25 +647,100 @@
         lines.push('END:VCALENDAR');
         return lines.map(icsFold).join('\r\n') + '\r\n';
       }
+      // Google takes the event straight in a browser tab. Everything else (Apple Calendar,
+      // Outlook, Thunderbird) opens from the .ics file, which is the only mechanism the web
+      // offers — there is no API that hands an event to whatever calendar app someone uses.
+      function googleUrl(loc, d) {
+        var start = new Date(d.start);
+        var end = new Date(start.getTime() + EVENT_HOURS * 3600e3);
+        var desc = loc.schedule.map(function (it) { return it.time + ' ' + it.what; }).join('\n');
+        if (loc.note) desc += '\n\n' + loc.note;
+        var q = {
+          action: 'TEMPLATE',
+          text: 'Futures Carols — ' + loc.name,
+          dates: icsStamp(start) + '/' + icsStamp(end),
+          details: desc,
+          location: loc.address
+        };
+        // Consecutive nights go in as one repeating event rather than two separate links.
+        if (d.repeat > 1) q.recur = 'RRULE:FREQ=DAILY;COUNT=' + d.repeat;
+        return 'https://calendar.google.com/calendar/render?' + Object.keys(q).map(function (k) {
+          return k + '=' + encodeURIComponent(q[k]);
+        }).join('&');
+      }
+      // One entry per Google link: a single event when the nights run back to back, otherwise
+      // one per date so nothing is quietly dropped.
+      function googleEntries(loc) {
+        var runs = [], i = 0;
+        while (i < loc.dates.length) {
+          var n = 1;
+          while (i + n < loc.dates.length &&
+                 Math.abs(new Date(loc.dates[i + n].start) - new Date(loc.dates[i + n - 1].start) - 864e5) < 60e3) n++;
+          runs.push({ start: loc.dates[i].start, repeat: n });
+          i += n;
+        }
+        return runs.map(function (r) {
+          return {
+            label: 'Google Calendar' + (runs.length > 1 ? ' — ' + fmt(r.start, { day: 'numeric', month: 'short' }) : ''),
+            href: googleUrl(loc, r)
+          };
+        });
+      }
+      function downloadIcs(loc) {
+        var url = URL.createObjectURL(new Blob([buildIcs(loc)], { type: 'text/calendar;charset=utf-8' }));
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = 'futures-carols-' + loc.id + '.ics';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+      }
       function buildCalendarButton(loc) {
+        var box = el('div', 'cal');
         var b = el('button', 'cal-btn');
         b.type = 'button';
+        b.setAttribute('aria-expanded', 'false');
         b.appendChild(icon('calendar'));
         // The label is hidden on phones, where the button is the plus-on-a-calendar icon alone.
         // aria-label carries the meaning either way.
         b.appendChild(el('span', 'cal-label', 'Add to calendar'));
         b.setAttribute('aria-label', 'Add Futures Carols ' + loc.name + ' to your calendar');
-        b.addEventListener('click', function () {
-          var url = URL.createObjectURL(new Blob([buildIcs(loc)], { type: 'text/calendar;charset=utf-8' }));
-          var a = document.createElement('a');
-          a.href = url;
-          a.download = 'futures-carols-' + loc.id + '.ics';
-          document.body.appendChild(a);
-          a.click();
-          a.remove();
-          setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+
+        var menu = el('div', 'cal-menu');
+        menu.hidden = true;
+        googleEntries(loc).forEach(function (g) {
+          var a = el('a', 'cal-item', g.label);
+          a.href = g.href; a.target = '_blank'; a.rel = 'noopener';
+          a.addEventListener('click', function () { close(); });
+          menu.appendChild(a);
         });
-        return b;
+        var dl = el('button', 'cal-item', 'Apple, Outlook & others');
+        dl.type = 'button';
+        dl.addEventListener('click', function () { downloadIcs(loc); close(); b.focus(); });
+        menu.appendChild(dl);
+
+        function close() {
+          menu.hidden = true;
+          b.setAttribute('aria-expanded', 'false');
+          document.removeEventListener('click', onOutside, true);
+          document.removeEventListener('keydown', onKey);
+        }
+        function onOutside(e) { if (!box.contains(e.target)) close(); }
+        function onKey(e) { if (e.key === 'Escape') { close(); b.focus(); } }
+        b.addEventListener('click', function () {
+          if (menu.hidden) {
+            menu.hidden = false;
+            b.setAttribute('aria-expanded', 'true');
+            document.addEventListener('click', onOutside, true);
+            document.addEventListener('keydown', onKey);
+          } else { close(); }
+        });
+
+        box.appendChild(b);
+        box.appendChild(menu);
+        box.close = close;
+        return box;
       }
 
       function buildPanel(loc) {
@@ -785,6 +858,8 @@
 
       function show(id) {
         clearInterval(timer);
+        // A panel being hidden would otherwise leave its calendar menu open underneath.
+        document.querySelectorAll('.cal').forEach(function (c) { if (c.close) c.close(); });
         document.querySelectorAll('.panel').forEach(function (p) { p.hidden = p.id !== id; });
         document.querySelectorAll('.picker button').forEach(function (b) {
           b.setAttribute('aria-expanded', String(b.getAttribute('aria-controls') === id));
