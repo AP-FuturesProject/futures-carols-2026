@@ -241,6 +241,8 @@
     .note { margin: -12px 0 20px; max-width: 58ch; font-size: .88rem; color: var(--muted); }
     .actions { display: flex; flex-wrap: wrap; gap: 12px; }
     .btn.ghost { background: transparent; color: var(--gold-light); border: 1px solid var(--gold); }
+    /* Placeholder for a button whose link has not arrived yet — must not look clickable. */
+    .btn.soon { background: transparent; color: var(--muted); border: 1px dashed var(--line); font-weight: 500; font-style: italic; cursor: default; }
     @media (hover: hover) { .btn.ghost:hover { background: rgba(217, 180, 95, .12); } }
 
 
@@ -417,6 +419,8 @@
           ],
           address: '57 Darley Road, Paradise SA 5075',
           mapsQuery: '57 Darley Road, Paradise SA',
+          // Drop the booking link in as `url` and the placeholder becomes a live "Buy Tickets" button.
+          tickets: { url: null },
           note: '$2 tickets available online from Monday 2 November. Candles and glow sticks on sale in the foyer.'
         },
         {
@@ -621,6 +625,16 @@
         if (loc.note) p.appendChild(el('p', 'note', loc.note));
 
         var actions = el('div', 'actions');
+        if (loc.tickets) {
+          if (loc.tickets.url) {
+            var buy = el('a', 'btn', 'Buy Tickets');
+            buy.href = loc.tickets.url; buy.target = '_blank'; buy.rel = 'noopener';
+            actions.appendChild(buy);
+          } else {
+            // No booking link yet, so this is deliberately a span: nothing to click and nothing to focus.
+            actions.appendChild(el('span', 'btn soon', 'Tickets available soon'));
+          }
+        }
         var dir = el('a', 'btn', 'Get directions');
         dir.href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(loc.mapsQuery);
         dir.target = '_blank'; dir.rel = 'noopener';
@@ -743,14 +757,16 @@
         eve: { cls: 'svc-eve', date: 'Thu 24 Dec', spoken: 'Christmas Eve, Thursday 24 December, ' },
         day: { cls: 'svc-day', date: 'Fri 25 Dec', spoken: 'Christmas Day, Friday 25 December, ' }
       };
+      // Cards render in this order, so the Christmas Eve campuses are listed first.
+      // If a campus switches to an Eve service, move it up here too.
       var CAMPUSES = [
+        { name: 'Mount Barker', service: 'eve', time: '7:30pm', maps: 'Futures Church Mount Barker SA' },
+        { name: 'Copper Coast', service: 'eve', time: '6:00pm', maps: 'Futures Church Kadina SA' },
         { name: 'Paradise', service: 'day', time: '9:00am', maps: 'Futures Church, 57 Darley Road, Paradise SA' },
         { name: 'Adelaide City', service: 'day', time: '9:00am', maps: 'Futures Church, 113 Currie Street, Adelaide SA' },
         { name: 'Salisbury', service: 'day', time: '9:00am', maps: 'Futures Church Salisbury SA' },
-        { name: 'Mount Barker', service: 'eve', time: '7:30pm', maps: 'Futures Church Mount Barker SA' },
         { name: 'Clare Valley', maps: 'Futures Church, Stradbroke Road, Stanley Flat SA 5453' },
         { name: 'Victor Harbor', service: 'day', time: '9:00am', maps: 'Futures Church Victor Harbor SA' },
-        { name: 'Copper Coast', service: 'eve', time: '6:00pm', maps: 'Futures Church Kadina SA' },
         { name: 'South (Old Reynella)', service: 'day', time: '9:00am', maps: 'Futures Church Old Reynella SA' }
       ];
       var IG = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17" cy="7" r=".8" fill="currentColor"/></svg>';
