@@ -268,8 +268,9 @@
     .note { margin: -12px 0 20px; max-width: 58ch; font-size: .88rem; color: var(--muted); }
     .actions { display: flex; flex-wrap: wrap; gap: 12px; }
     .btn.ghost { background: transparent; color: var(--gold-light); border: 1px solid var(--gold); }
-    /* Placeholder for a button whose link has not arrived yet — must not look clickable. */
-    .btn.soon { background: transparent; color: var(--muted); border: 1px dashed var(--line); font-weight: 500; font-style: italic; cursor: default; }
+    /* A button-shaped statement rather than an action: a link that has not arrived yet, or a
+       fact like free entry. Never a link and never focusable, so it must not look clickable. */
+    .btn.static { background: transparent; color: var(--muted); border: 1px dashed var(--line); font-weight: 500; font-style: italic; cursor: default; }
     @media (hover: hover) { .btn.ghost:hover { background: rgba(217, 180, 95, .12); } }
 
 
@@ -472,7 +473,10 @@
             { label: 'Kids activities', icon: 'balloon' }
           ],
           address: '7 Walker Street, Hayborough',
-          mapsQuery: '7 Walker Street, Hayborough SA'
+          mapsQuery: '7 Walker Street, Hayborough SA',
+          // `entry:` renders a button-shaped statement next to Get directions. Paradise is
+          // ticketed, so it has none.
+          entry: 'Free entry'
         },
         {
           id: 'adelaide-city', name: 'Adelaide City',
@@ -489,6 +493,7 @@
           ],
           address: '113 Currie Street, Adelaide',
           mapsQuery: 'Futures Church, 113 Currie Street, Adelaide SA',
+          entry: 'Free entry',
           note: 'More details to come.'
         },
         {
@@ -509,6 +514,7 @@
           ],
           address: '165 Old South Road, Old Reynella SA 5161',
           mapsQuery: '165 Old South Road, Old Reynella SA',
+          entry: 'Free entry',
           note: 'Gold coin donation per person on entry. Plenty of free parking.'
         },
         {
@@ -522,6 +528,7 @@
           ],
           address: 'Stradbroke Road, Stanley Flat SA 5453',
           mapsQuery: 'Futures Church, Stradbroke Road, Stanley Flat SA 5453',
+          entry: 'Free entry',
           note: 'More details to come.'
         }
       ];
@@ -809,9 +816,10 @@
             actions.appendChild(buy);
           } else {
             // No booking link yet, so this is deliberately a span: nothing to click and nothing to focus.
-            actions.appendChild(el('span', 'btn soon', 'Tickets available soon'));
+            actions.appendChild(el('span', 'btn static', 'Tickets available soon'));
           }
         }
+        if (loc.entry) actions.appendChild(el('span', 'btn static', loc.entry));
         var dir = el('a', 'btn', 'Get directions');
         dir.href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(loc.mapsQuery);
         dir.target = '_blank'; dir.rel = 'noopener';
