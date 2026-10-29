@@ -629,16 +629,17 @@
   </script>
   <script>
     (function () {
+      // day/date default to Christmas Day (Friday 9am, 25 December). Set them on a campus whose service is at a different time.
       // maps = what Google Maps searches for. Swap in a full street address if a campus is hard to find.
       // Add each campus's Instagram link as instagram: 'https://www.instagram.com/handle/'. A campus with no link shows no icon.
       var CAMPUSES = [
         { name: 'Paradise', maps: 'Futures Church, 57 Darley Road, Paradise SA' },
         { name: 'Adelaide City', maps: 'Futures Church, 113 Currie Street, Adelaide SA' },
         { name: 'Salisbury', maps: 'Futures Church Salisbury SA' },
-        { name: 'Mount Barker', maps: 'Futures Church Mount Barker SA' },
-        { name: 'Clare Valley', maps: 'Futures Church, Stradbroke Road, Stanley Flat SA 5453' },
+        { name: 'Mount Barker', maps: 'Futures Church Mount Barker SA', day: 'Thursday 7pm', date: '24 December (Christmas Eve)' },
+        { name: 'Clare Valley', maps: 'Futures Church, Stradbrooke Road, Stanley Flat SA 5453' },
         { name: 'Victor Harbor', maps: 'Futures Church Victor Harbor SA' },
-        { name: 'Copper Coast', maps: 'Futures Church Kadina SA' },
+        { name: 'Copper Coast', maps: 'Futures Church Kadina SA', day: 'Thursday 6pm', date: '24 December (Christmas Eve)' },
         { name: 'South (Old Reynella)', maps: 'Futures Church Old Reynella SA' }
       ];
       var IG = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17" cy="7" r=".8" fill="currentColor"/></svg>';
@@ -657,15 +658,15 @@
         var name = document.createElement('strong');
         name.textContent = c.name;
         var day = document.createElement('span');
-        day.textContent = 'Friday 9am';
+        day.textContent = c.day || 'Friday 9am';
         var date = document.createElement('span');
-        date.textContent = '25 December';
+        date.textContent = c.date || '25 December';
         info.appendChild(name); info.appendChild(day); info.appendChild(date);
         var link = document.createElement('a');
         link.className = 'campus-link';
         link.href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(c.maps || ('Futures Church ' + c.name));
         link.target = '_blank'; link.rel = 'noopener';
-        link.setAttribute('aria-label', c.name + ' campus, Friday 25 December 9am family service, get directions in Google Maps');
+        link.setAttribute('aria-label', c.name + ' campus, ' + (c.day || 'Friday 9am') + ', ' + (c.date || '25 December') + ', get directions in Google Maps');
         link.appendChild(info);
         li.appendChild(link);
         if (c.instagram) {
