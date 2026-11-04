@@ -258,6 +258,8 @@
     .schedule { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin: 0 0 24px; padding: 0; list-style: none; }
     .schedule li { border-left: 2px solid var(--gold); padding-left: 14px; }
     .schedule .time { display: block; font-family: var(--display); letter-spacing: var(--display-tracking); font-size: 2.4rem; line-height: 1; font-weight: 600; color: var(--gold-light); }
+    .schedule .time-long { font-size: 1.6rem; line-height: 1.1; }
+    .schedule .desc { display: block; margin-top: 6px; font-size: .9rem; line-height: 1.45; color: var(--muted); max-width: 34ch; }
     .schedule .what { font-size: .8rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
     .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 24px; padding: 0; list-style: none; }
     .chips li { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px 6px 10px; border-radius: 999px; font-size: .9rem; border: 1px solid var(--line); background: rgba(0,0,0,.18); }
@@ -439,6 +441,7 @@
             { label: 'Face painting', icon: 'brush' },
             { label: 'Singers, dancers & a kids act', icon: 'people' }
           ],
+          intro: 'You\u2019re invited to Futures Carols, hosted by Futures Church Paradise! Come and celebrate the Christmas season with us at our annual carols spectacular, with two opportunities across the weekend to watch the show. Expect all your favourite carols from our talented singers and dancers, plus a special act just for the kids. Get ready to sing along to your favourite Christmas tunes!',
           address: '57 Darley Road, Paradise SA 5075',
           mapsQuery: '57 Darley Road, Paradise SA',
           // Booking link for the live "Buy Tickets" button (opens in a new tab). Set url to null to show "Tickets available soon" instead.
@@ -452,7 +455,7 @@
           ],
           schedule: [
             { time: '4:00pm', what: 'Christmas carnival' },
-            { time: '5:00pm', what: 'Carols show' }
+            { time: '5:30pm', what: 'Carols show' }
           ],
           highlights: [
             { label: 'Jumping castle', icon: 'castle' },
@@ -471,9 +474,10 @@
           dates: [
             { start: '2026-12-20T16:00:00+10:30' }
           ],
+          intro: 'Join us for Carols in the City, with two celebrations to choose from! Bring a friend, or bring the whole family.',
           schedule: [
-            { time: '4:00pm', what: 'Carols show — first session' },
-            { time: '6:00pm', what: 'Carols show — second session' }
+            { time: '4:00pm', what: 'Family Carols', desc: 'Bring the kids for an afternoon of carols, children\u2019s items and fun activities afterward. With an early 4pm start, the little ones will be home in time for bed.' },
+            { time: '6:00pm', what: 'Carols Spectacular', desc: 'Join us for an evening of festive music to lift the Christmas spirit.' }
           ],
           highlights: [
             { label: 'Candles & glow sticks', icon: 'glow' },
@@ -481,16 +485,17 @@
           ],
           address: '113 Currie Street, Adelaide',
           mapsQuery: 'Futures Church, 113 Currie Street, Adelaide SA',
-          note: 'More details to come.'
+          note: 'Tickets are required, but seating is unreserved (free seating), so come early to sit together.'
         },
         {
           id: 'south', name: 'South (Old Reynella)',
           dates: [
             { start: '2026-12-13T17:00:00+10:30' }
           ],
+          intro: 'Join us for this year\u2019s Futures Carols at Old Reynella! Our carols show has all your favourite songs and an interactive kids item. Come early to get your seat and pick up candles and glow sticks before the show.',
           schedule: [
-            { time: '5:00pm', what: 'Christmas carnival' },
-            { time: '6:30pm', what: 'Carols service' }
+            { time: '5:00pm', what: 'Carols show', desc: 'Starts at 5pm sharp.' },
+            { time: 'After the show', what: 'Family entertainment', desc: 'Inflatables, photos with Santa, food and drink options and family fun.' }
           ],
           highlights: [
             { label: 'Inflatables', icon: 'castle' },
@@ -625,7 +630,7 @@
       function buildIcs(loc) {
         var now = icsStamp(new Date());
         var lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Futures Church//Futures Carols 2026//EN', 'CALSCALE:GREGORIAN', 'METHOD:PUBLISH'];
-        var desc = loc.schedule.map(function (it) { return it.time + ' ' + it.what; }).join('\n');
+        var desc = loc.schedule.map(function (it) { return it.time + ' ' + it.what + (it.desc ? ' - ' + it.desc : ''); }).join('\n');
         if (loc.note) desc += '\n\n' + loc.note;
         loc.dates.forEach(function (d, i) {
           var start = new Date(d.start);
@@ -652,7 +657,7 @@
       function googleUrl(loc, d) {
         var start = new Date(d.start);
         var end = new Date(start.getTime() + EVENT_HOURS * 3600e3);
-        var desc = loc.schedule.map(function (it) { return it.time + ' ' + it.what; }).join('\n');
+        var desc = loc.schedule.map(function (it) { return it.time + ' ' + it.what + (it.desc ? ' - ' + it.desc : ''); }).join('\n');
         if (loc.note) desc += '\n\n' + loc.note;
         var q = {
           action: 'TEMPLATE',
@@ -775,8 +780,9 @@
         var sched = el('ul', 'schedule');
         loc.schedule.forEach(function (it) {
           var li = el('li');
-          li.appendChild(el('span', 'time', it.time));
+          li.appendChild(el('span', it.time.length > 7 ? 'time time-long' : 'time', it.time));
           li.appendChild(el('span', 'what', it.what));
+          if (it.desc) li.appendChild(el('span', 'desc', it.desc));
           sched.appendChild(li);
         });
         p.appendChild(sched);
