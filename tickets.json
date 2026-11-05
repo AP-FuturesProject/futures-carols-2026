@@ -1,0 +1,22 @@
+{
+  "updated": "2026-11-05T00:00:00.000Z",
+  "sessions": {
+    "adelaide-city": {
+      "soldOut": false,
+      "options": [
+        {
+          "time": "4:00pm",
+          "name": "FAMILY CAROLS (4PM)",
+          "soldOut": false,
+          "remaining": 287
+        },
+        {
+          "time": "6:00pm",
+          "name": "CAROLS SPECTACULAR (6PM)",
+          "soldOut": false,
+          "remaining": 50
+        }
+      ]
+    }
+  }
+}

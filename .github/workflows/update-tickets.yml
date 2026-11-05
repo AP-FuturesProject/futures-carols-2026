@@ -1,0 +1,46 @@
+# Keeps tickets.json in step with Planning Center so a session that fills up shows as sold out
+# on the carols page. Runs through November and December only; outside that window the carols
+# are over and the schedule is dead weight.
+name: Update ticket availability
+
+on:
+  schedule:
+    - cron: '*/30 * 1-24 11,12 *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-tickets
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Read availability from Planning Center
+        env:
+          PCO_APP_ID: ${{ secrets.PCO_APP_ID }}
+          PCO_SECRET: ${{ secrets.PCO_SECRET }}
+        run: node scripts/update-tickets.mjs
+
+      # The script leaves the file untouched when nothing moved, so most runs commit nothing
+      # and the site is not rebuilt.
+      - name: Commit when availability changed
+        run: |
+          if git diff --quiet -- tickets.json; then
+            echo "Nothing to commit."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add tickets.json
+          git commit -m "Ticket availability update"
+          git push

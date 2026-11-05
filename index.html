@@ -273,6 +273,11 @@
     .btn.ghost { background: transparent; color: var(--gold-light); border: 1px solid var(--gold); }
     /* Placeholder for a button whose link has not arrived yet — must not look clickable. */
     .btn.soon { background: transparent; color: var(--muted); border: 1px dashed var(--line); font-weight: 500; font-style: italic; cursor: default; }
+    /* A session that has reached capacity: dimmed row, badge beside the time, and a dead "Sold out" button. */
+    .btn.sold { background: transparent; color: var(--muted); border: 1px solid var(--line); font-weight: 500; cursor: default; }
+    .schedule li.sold { border-left-color: var(--line); }
+    .schedule li.sold .time, .schedule li.sold .what, .schedule li.sold .desc { color: var(--muted); }
+    .sold-badge { display: inline-block; margin-top: 6px; padding: 3px 10px; border-radius: 999px; border: 1px solid var(--line); font-size: .7rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
     @media (hover: hover) { .btn.ghost:hover { background: rgba(217, 180, 95, .12); } }
 
 
@@ -781,9 +786,12 @@
         var sched = el('ul', 'schedule');
         loc.schedule.forEach(function (it) {
           var li = el('li');
+          // Keyed so live ticket numbers can find this row later without re-rendering the panel.
+          li.setAttribute('data-session', loc.id + '|' + it.time);
           li.appendChild(el('span', it.time.length > 7 ? 'time time-long' : 'time', it.time));
           li.appendChild(el('span', 'what', it.what));
           if (it.desc) li.appendChild(el('span', 'desc', it.desc));
+          if (it.soldOut) markSoldOut(li);
           sched.appendChild(li);
         });
         p.appendChild(sched);
@@ -810,9 +818,13 @@
 
         var actions = el('div', 'actions');
         if (loc.tickets) {
-          if (loc.tickets.url) {
+          if (loc.tickets.soldOut) {
+            // Every session is full, so this is a span: nothing to click and nothing to focus.
+            actions.appendChild(el('span', 'btn sold', 'Sold out'));
+          } else if (loc.tickets.url) {
             var buy = el('a', 'btn', 'Buy Tickets');
             buy.href = loc.tickets.url; buy.target = '_blank'; buy.rel = 'noopener';
+            buy.setAttribute('data-tickets-for', loc.id);
             actions.appendChild(buy);
           } else {
             // No booking link yet, so this is deliberately a span: nothing to click and nothing to focus.
@@ -830,6 +842,13 @@
         }
         p.appendChild(actions);
         return p;
+      }
+
+      // Dim a schedule row and badge it. Safe to call twice on the same row.
+      function markSoldOut(li) {
+        if (li.classList.contains('sold')) return;
+        li.classList.add('sold');
+        li.appendChild(el('span', 'sold-badge', 'Sold out'));
       }
 
       // Shown beside the featured button. Salisbury and Mount Barker have no carols of their
@@ -862,6 +881,30 @@
         picker.appendChild(li);
         panelsEl.appendChild(buildPanel(loc));
       });
+
+      // Live ticket numbers. `tickets.json` is rewritten by the update-tickets workflow from
+      // Planning Center; when it is missing or stale the panels simply keep what LOCATIONS says.
+      // Shape: { sessions: { "<location id>": { soldOut: bool, options: [{ time, soldOut }] } } }
+      (function loadTicketStatus() {
+        if (!window.fetch) return;
+        fetch('tickets.json', { cache: 'no-store' })
+          .then(function (r) { return r.ok ? r.json() : null; })
+          .then(function (data) {
+            if (!data || !data.sessions) return;
+            Object.keys(data.sessions).forEach(function (id) {
+              var status = data.sessions[id] || {};
+              (status.options || []).forEach(function (opt) {
+                if (!opt.soldOut) return;
+                var row = panelsEl.querySelector('[data-session="' + id + '|' + opt.time + '"]');
+                if (row) markSoldOut(row);
+              });
+              if (!status.soldOut) return;
+              var buy = panelsEl.querySelector('[data-tickets-for="' + id + '"]');
+              if (buy) buy.parentNode.replaceChild(el('span', 'btn sold', 'Sold out'), buy);
+            });
+          })
+          .catch(function () { /* offline or no file yet: leave the panels as rendered */ });
+      })();
 
       function show(id) {
         clearInterval(timer);
