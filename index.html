@@ -275,8 +275,15 @@
     .btn.soon { background: transparent; color: var(--muted); border: 1px dashed var(--line); font-weight: 500; font-style: italic; cursor: default; }
     /* A session that has reached capacity: dimmed row, badge beside the time, and a dead "Sold out" button. */
     .btn.sold { background: transparent; color: var(--muted); border: 1px solid var(--line); font-weight: 500; cursor: default; }
+    /* A slow gold halo on the one action that matters. Paused on hover so it is calm while being clicked. */
+    .btn.pulse { animation: ticket-pulse 3.2s ease-in-out infinite; }
+    @keyframes ticket-pulse { 0% { box-shadow: 0 0 0 0 rgba(217, 180, 95, .5); } 70% { box-shadow: 0 0 0 16px rgba(217, 180, 95, 0); } 100% { box-shadow: 0 0 0 0 rgba(217, 180, 95, 0); } }
+    @media (hover: hover) { .btn.pulse:hover { animation-play-state: paused; } }
+    @media (prefers-reduced-motion: reduce) { .btn.pulse { animation: none; } }
     .schedule li.sold { border-left-color: var(--line); }
     .schedule li.sold .time, .schedule li.sold .what, .schedule li.sold .desc { color: var(--muted); }
+    .dates .sold-badge { margin: 0 0 0 .5em; vertical-align: middle; }
+    .dates span.sold { color: var(--muted); }
     .sold-badge { display: inline-block; margin-top: 6px; padding: 3px 10px; border-radius: 999px; border: 1px solid var(--line); font-size: .7rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
     @media (hover: hover) { .btn.ghost:hover { background: rgba(217, 180, 95, .12); } }
 
@@ -430,13 +437,13 @@
         {
           id: 'paradise', name: 'Paradise', featured: true,
           dates: [
-            { start: '2026-12-12T17:30:00+10:30' },
-            { start: '2026-12-13T17:30:00+10:30' }
+            { start: '2026-12-12T16:30:00+10:30' },
+            { start: '2026-12-13T16:30:00+10:30' }
           ],
           schedule: [
-            { time: '5:30pm', what: 'Food trucks, Santa photos & family activities' },
-            { time: '6:30pm', what: 'Auditorium doors open' },
-            { time: '7:00pm', what: 'Carols main show' }
+            { time: '4:30pm', what: 'Food trucks, Santa photos & family activities' },
+            { time: '5:30pm', what: 'Auditorium doors open' },
+            { time: '6:00pm', what: 'Carols main show' }
           ],
           highlights: [
             { label: 'Photos with Santa', icon: 'santa' },
@@ -451,7 +458,7 @@
           mapsQuery: '57 Darley Road, Paradise SA',
           // Booking link for the live "Buy Tickets" button (opens in a new tab). Set url to null to show "Tickets available soon" instead.
           tickets: { url: 'https://events.humanitix.com/futures-carols-at-paradise-2026' },
-          note: '$2 tickets available online from Monday 2 November. Candles and glow sticks on sale in the foyer.'
+          note: '$5 tickets available online. Candles and glow sticks on sale in the foyer.'
         },
         {
           id: 'victor-harbor', name: 'Victor Harbor',
@@ -578,7 +585,12 @@
         var line = el('p', 'dates');
         loc.dates.forEach(function (d, i) {
           if (i) line.appendChild(el('em', null, '+'));
-          line.appendChild(el('span', null, fmt(d.start, { weekday: 'long', day: 'numeric', month: 'long' })));
+          var span = el('span', null, fmt(d.start, { weekday: 'long', day: 'numeric', month: 'long' }));
+          // Venues that sell a ticket per night (Paradise) mark the sold-out night here rather
+          // than on the schedule, which is one running order shared by both nights.
+          span.setAttribute('data-date', loc.id + '|' + d.start.slice(0, 10));
+          if (d.soldOut) markSoldOut(span);
+          line.appendChild(span);
         });
         return line;
       }
@@ -822,7 +834,7 @@
             // Every session is full, so this is a span: nothing to click and nothing to focus.
             actions.appendChild(el('span', 'btn sold', 'Sold out'));
           } else if (loc.tickets.url) {
-            var buy = el('a', 'btn', 'Buy Tickets');
+            var buy = el('a', 'btn pulse', 'Buy Tickets');
             buy.href = loc.tickets.url; buy.target = '_blank'; buy.rel = 'noopener';
             buy.setAttribute('data-tickets-for', loc.id);
             actions.appendChild(buy);
@@ -895,7 +907,10 @@
               var status = data.sessions[id] || {};
               (status.options || []).forEach(function (opt) {
                 if (!opt.soldOut) return;
-                var row = panelsEl.querySelector('[data-session="' + id + '|' + opt.time + '"]');
+                var sel = opt.date
+                  ? '[data-date="' + id + '|' + opt.date + '"]'
+                  : '[data-session="' + id + '|' + opt.time + '"]';
+                var row = panelsEl.querySelector(sel);
                 if (row) markSoldOut(row);
               });
               if (!status.soldOut) return;

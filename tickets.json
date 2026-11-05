@@ -17,6 +17,19 @@
           "remaining": 50
         }
       ]
+    },
+    "paradise": {
+      "soldOut": false,
+      "options": [
+        {
+          "date": "2026-12-12",
+          "soldOut": false
+        },
+        {
+          "date": "2026-12-13",
+          "soldOut": false
+        }
+      ]
     }
   }
 }
