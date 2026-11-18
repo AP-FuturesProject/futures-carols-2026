@@ -383,6 +383,25 @@
     <div class="carousel-wrap"><div id="photo-carousel" class="carousel"></div></div>
   </header>
 
+  <!-- Google Tag Manager. The container id lives in data-gtm-id below (single source of truth):
+       change it there and the loader picks it up - no ids hardcoded inside the script. -->
+  <script data-gtm-id="GTM-KCP6G833">
+    (function (d, s) {
+      var self = d.currentScript;
+      var id = self && self.getAttribute('data-gtm-id');
+      if (!id) return;
+
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = window.gtag || function () { window.dataLayer.push(arguments); };
+      window.gtag('js', new Date());
+
+      var tag = d.createElement(s);
+      tag.async = true;
+      tag.src = 'https://www.googletagmanager.com/gtm.js?id=' + encodeURIComponent(id);
+      self.parentNode.insertBefore(tag, self);
+    })(document, 'script');
+  </script>
+
   <main>
     <section class="wrap" id="locations" aria-labelledby="loc-title">
       <div class="deco" aria-hidden="true"><img class="star star-d" src="assets/star.webp" alt=""></div>
