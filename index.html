@@ -383,8 +383,10 @@
     <div class="carousel-wrap"><div id="photo-carousel" class="carousel"></div></div>
   </header>
 
-  <!-- Google Tag Manager. The container id lives in data-gtm-id below (single source of truth):
-       change it there and the loader picks it up - no ids hardcoded inside the script. -->
+  <!-- Google Tag Manager. The container id lives in data-gtm-id below: the loader reads it
+       from there, so it is never hardcoded inside the script. The <noscript> fallback under
+       this block has to repeat the id literally (no script runs to build it) - if you change
+       the container, change BOTH. -->
   <script data-gtm-id="GTM-KCP6G833">
     (function (d, s) {
       var self = d.currentScript;
@@ -392,8 +394,10 @@
       if (!id) return;
 
       window.dataLayer = window.dataLayer || [];
+      // Canonical GTM bootstrap: gtm.start is what the container reads for load timing.
+      window.dataLayer.push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+      // Kept so tag code and later pushes can use the familiar gtag() helper.
       window.gtag = window.gtag || function () { window.dataLayer.push(arguments); };
-      window.gtag('js', new Date());
 
       var tag = d.createElement(s);
       tag.async = true;
@@ -401,6 +405,8 @@
       self.parentNode.insertBefore(tag, self);
     })(document, 'script');
   </script>
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KCP6G833"
+    height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe></noscript>
 
   <main>
     <section class="wrap" id="locations" aria-labelledby="loc-title">
